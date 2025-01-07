@@ -6,6 +6,7 @@ import {
   Composite,
   Mouse,
   MouseConstraint,
+  Vertices,
 } from "matter-js";
 import p5 from "p5";
 
@@ -49,6 +50,10 @@ Render.run(render);
 const runner = Runner.create();
 Runner.run(runner, engine);
 
+const roundToNearest = (toNearest, original) => {
+  return Math.round(original / toNearest) * toNearest;
+};
+
 const mainSketch = (p) => {
   p.setup = () => {
     p.createCanvas(width, height);
@@ -58,9 +63,19 @@ const mainSketch = (p) => {
     p.fill(0);
     p.noStroke();
     for (const body of bodies) {
-      for (let x = body.bounds.min.x; x < body.bounds.max.x; x += 5) {
-        for (let y = body.bounds.min.y; y < body.bounds.max.y; y += 5) {
-          p.square(x, y, 4);
+      for (
+        let x = roundToNearest(5, body.bounds.min.x);
+        x < body.bounds.max.x;
+        x += 5
+      ) {
+        for (
+          let y = roundToNearest(5, body.bounds.min.y);
+          y < body.bounds.max.y;
+          y += 5
+        ) {
+          if (Vertices.contains(body.vertices, { x, y })) {
+            p.square(x, y, 4);
+          }
         }
       }
     }
