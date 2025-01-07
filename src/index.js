@@ -23,9 +23,11 @@ const render = Render.create({
   },
 });
 
-const boxA = Bodies.rectangle(400, 200, 80, 80);
-const boxB = Bodies.rectangle(450, 50, 80, 80);
-const ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
+const bodies = [
+  Bodies.rectangle(400, 200, 80, 80),
+  Bodies.rectangle(450, 50, 80, 80),
+  Bodies.rectangle(400, 610, 810, 60, { isStatic: true }),
+];
 
 // add mouse control
 const mouse = Mouse.create(render.canvas),
@@ -40,7 +42,7 @@ const mouse = Mouse.create(render.canvas),
   });
 
 Composite.add(engine.world, mouseConstraint);
-Composite.add(engine.world, [boxA, boxB, ground]);
+Composite.add(engine.world, bodies);
 
 Render.run(render);
 
@@ -53,12 +55,13 @@ const mainSketch = (p) => {
   };
   p.draw = () => {
     p.background(255);
-
     p.fill(0);
     p.noStroke();
-    for (let x = 0; x < width; x += 5) {
-      for (let y = 0; y < height; y += 5) {
-        p.square(x, y, 4);
+    for (const body of bodies) {
+      for (let x = body.bounds.min.x; x < body.bounds.max.x; x += 5) {
+        for (let y = body.bounds.min.y; y < body.bounds.max.y; y += 5) {
+          p.square(x, y, 4);
+        }
       }
     }
   };
