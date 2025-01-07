@@ -25,8 +25,7 @@ const render = Render.create({
 });
 
 const bodies = [
-  Bodies.rectangle(400, 200, 80, 80),
-  Bodies.rectangle(450, 50, 80, 80),
+  Bodies.trapezoid(100, 100, 60, 75, 1),
   Bodies.rectangle(400, 610, 810, 60, { isStatic: true }),
 ];
 
@@ -54,8 +53,8 @@ const roundToNearest = (toNearest, original) => {
   return Math.round(original / toNearest) * toNearest;
 };
 
-const ROUND_TO = 10;
-const BOX_SIZE = 7;
+const ROUND_TO = 4;
+const BOX_SIZE = 2;
 
 const mainSketch = (p) => {
   p.setup = () => {
