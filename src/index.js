@@ -54,6 +54,9 @@ const roundToNearest = (toNearest, original) => {
   return Math.round(original / toNearest) * toNearest;
 };
 
+const ROUND_TO = 10;
+const BOX_SIZE = 7;
+
 const mainSketch = (p) => {
   p.setup = () => {
     p.createCanvas(width, height);
@@ -64,17 +67,17 @@ const mainSketch = (p) => {
     p.noStroke();
     for (const body of bodies) {
       for (
-        let x = roundToNearest(5, body.bounds.min.x);
+        let x = roundToNearest(ROUND_TO, body.bounds.min.x);
         x < body.bounds.max.x;
-        x += 5
+        x += ROUND_TO
       ) {
         for (
-          let y = roundToNearest(5, body.bounds.min.y);
+          let y = roundToNearest(ROUND_TO, body.bounds.min.y);
           y < body.bounds.max.y;
-          y += 5
+          y += ROUND_TO
         ) {
           if (Vertices.contains(body.vertices, { x, y })) {
-            p.square(x, y, 4);
+            p.square(x, y, BOX_SIZE);
           }
         }
       }
