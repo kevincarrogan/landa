@@ -1,53 +1,8 @@
-import {
-  Engine,
-  Render,
-  Runner,
-  Bodies,
-  Composite,
-  Mouse,
-  MouseConstraint,
-  Vertices,
-} from "matter-js";
+import { Engine, Runner, Bodies, Composite, Vertices } from "matter-js";
 import p5 from "p5";
 
-const element = document.querySelector("#container");
 const width = 800;
 const height = 600;
-
-const engine = Engine.create();
-const render = Render.create({
-  element,
-  engine,
-  options: {
-    height,
-    width,
-  },
-});
-
-const bodies = [
-  Bodies.trapezoid(100, 100, 60, 75, 1),
-  Bodies.rectangle(400, 610, 810, 60, { isStatic: true }),
-];
-
-// add mouse control
-const mouse = Mouse.create(render.canvas),
-  mouseConstraint = MouseConstraint.create(engine, {
-    mouse: mouse,
-    constraint: {
-      stiffness: 0.2,
-      render: {
-        visible: false,
-      },
-    },
-  });
-
-Composite.add(engine.world, mouseConstraint);
-Composite.add(engine.world, bodies);
-
-Render.run(render);
-
-const runner = Runner.create();
-Runner.run(runner, engine);
 
 const roundToNearest = (toNearest, original) => {
   return Math.round(original / toNearest) * toNearest;
@@ -56,15 +11,30 @@ const roundToNearest = (toNearest, original) => {
 const ROUND_TO = 4;
 const BOX_SIZE = 2;
 
+let bodies = [];
+
 const mainSketch = (p) => {
+  let composite;
   p.setup = () => {
     p.createCanvas(width, height);
+
+    const engine = Engine.create();
+
+    bodies = [
+      Bodies.trapezoid(100, 100, 60, 75, 1),
+      Bodies.rectangle(0, 600 - 10, width * 2, 20, { isStatic: true }),
+    ];
+
+    composite = Composite.add(engine.world, bodies);
+
+    const runner = Runner.create();
+    Runner.run(runner, engine);
   };
   p.draw = () => {
     p.background(255);
     p.fill(0);
     p.noStroke();
-    for (const body of bodies) {
+    for (const body of composite.bodies) {
       for (
         let x = roundToNearest(ROUND_TO, body.bounds.min.x);
         x < body.bounds.max.x;
