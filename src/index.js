@@ -9,10 +9,14 @@ const roundToNearest = (toNearest, original) => {
   return Math.round(original / toNearest) * toNearest;
 };
 
-const ROUND_TO = 4;
-const BOX_SIZE = 2;
+const ROUND_TO = 5;
+const BOX_SIZE = 4;
 
 const mainSketch = (p) => {
+  const drawPixel = ({x, y}) => {
+    p.square(x, y, BOX_SIZE);
+  }
+
   let composite;
   p.setup = () => {
     const canvasElement = document.querySelector("#canvas");
@@ -45,8 +49,12 @@ const mainSketch = (p) => {
           y < body.bounds.max.y;
           y += ROUND_TO
         ) {
-          if (Vertices.contains(body.vertices, { x, y })) {
-            p.square(x, y, BOX_SIZE);
+          const point = {
+            x,
+            y,
+          };
+          if (Vertices.contains(body.vertices, point)) {
+            drawPixel(point);
           }
         }
       }
