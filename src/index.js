@@ -1,5 +1,6 @@
 import { Engine, Runner, Bodies, Composite, Vertices } from "matter-js";
 import p5 from "p5";
+import { minimalEditor } from "prism-code-editor/setups";
 
 const width = 800;
 const height = 600;
@@ -11,16 +12,15 @@ const roundToNearest = (toNearest, original) => {
 const ROUND_TO = 4;
 const BOX_SIZE = 2;
 
-let bodies = [];
-
 const mainSketch = (p) => {
   let composite;
   p.setup = () => {
-    p.createCanvas(width, height);
+    const canvasElement = document.querySelector("#canvas");
+    p.createCanvas(width, height, canvasElement);
 
     const engine = Engine.create();
 
-    bodies = [
+    const bodies = [
       Bodies.trapezoid(100, 100, 60, 75, 1),
       Bodies.rectangle(0, 600 - 10, width * 2, 20, { isStatic: true }),
     ];
@@ -55,3 +55,11 @@ const mainSketch = (p) => {
 };
 
 new p5(mainSketch);
+
+minimalEditor(
+  "#editor",
+  {
+    theme: "github-light",
+  },
+  () => console.log("ready")
+);

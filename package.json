@@ -24,7 +24,8 @@
   },
   "dependencies": {
     "matter-js": "^0.20.0",
-    "p5": "^1.11.2"
+    "p5": "^1.11.2",
+    "prism-code-editor": "^3.4.0"
   },
   "lint-staged": {
     "*.{js,css,md}": "prettier --write"
