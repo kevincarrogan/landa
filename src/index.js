@@ -25,8 +25,8 @@ const mainSketch = (p) => {
     const engine = Engine.create();
 
     const bodies = [
-      Bodies.trapezoid(100, 100, 60, 75, 1),
-      Bodies.rectangle(0, 600 - 10, width * 2, 20, { isStatic: true }),
+      Bodies.trapezoid(100, height - (75 / 2) + 20, 90, 100, 1),
+      Bodies.rectangle(width / 2, height - 10, width, 20, { isStatic: true }),
     ];
 
     composite = Composite.add(engine.world, bodies);
@@ -36,7 +36,6 @@ const mainSketch = (p) => {
   };
   p.draw = () => {
     p.background(255);
-    p.fill(0);
     p.noStroke();
     for (const body of composite.bodies) {
       for (
@@ -54,6 +53,19 @@ const mainSketch = (p) => {
             y,
           };
           if (Vertices.contains(body.vertices, point)) {
+            if (x % 10 === 0) {
+              if (y % 10 === 0) {
+                p.fill(100);
+              } else {
+                p.fill(0);
+              }
+            } else {
+              if (y % 10 === 0) {
+                p.fill(0);
+              } else {
+                p.fill(100);
+              }
+            }
             drawPixel(point);
           }
         }
