@@ -10,6 +10,7 @@ import {
 import p5 from "p5";
 import { minimalEditor } from "prism-code-editor/setups";
 import { Rocket } from "./rocket";
+import { get_parser } from "./parser";
 
 const width = 800;
 const height = 600;
@@ -113,3 +114,6 @@ minimalEditor(
   },
   () => console.log("ready")
 );
+
+const parser = get_parser();
+window.parser = parser;

@@ -1,0 +1,35 @@
+version = 1
+requires-python = ">=3.12.2"
+
+[[package]]
+name = "landa"
+version = "0.1.0"
+source = { virtual = "." }
+
+[package.dev-dependencies]
+dev = [
+    { name = "larkjs" },
+]
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [{ name = "larkjs", specifier = ">=0.0.2" }]
+
+[[package]]
+name = "lark-parser"
+version = "0.11.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/cd/55/8951788003c9f65dfcf9c51d7ba7952c6c5ae72685aa3cf9c66e925bd538/lark-parser-0.11.3.tar.gz", hash = "sha256:e29ca814a98bb0f81674617d878e5f611cb993c19ea47f22c80da3569425f9bd", size = 229917 }
+
+[[package]]
+name = "larkjs"
+version = "0.0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "lark-parser" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0a/b0/d3dba5508be284ce6167bdc845150ee9eeaeee18f1aa026aff1edafc5e8e/Larkjs-0.0.2.tar.gz", hash = "sha256:efd2ef487d3a9d9eb89adf8991bcb281809355f33830e3c9600ad0ae7ec742c7", size = 33487 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/11/90/ad90ce3c8174a79186e1a1c706e447ecb672b8a9f92202ee0dc195637dbe/Larkjs-0.0.2-py2.py3-none-any.whl", hash = "sha256:da03639dc5459006e07ca62a01ad4327b1596fd1f17fe57916499b66b94a465b", size = 33897 },
+]

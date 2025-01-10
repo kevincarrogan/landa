@@ -1,0 +1,16 @@
+start: line*
+
+line: call _NEWLINE?
+
+call: FUNCTION_NAME "(" parameter ("," parameter)* ")"
+
+parameter: PARAMETER_NAME ":" " "* PARAMETER_VALUE
+
+FUNCTION_NAME: CNAME
+PARAMETER_NAME: CNAME
+PARAMETER_VALUE: ESCAPED_STRING | INT
+_NEWLINE: "\n"
+
+%import common.CNAME
+%import common.ESCAPED_STRING
+%import common.INT

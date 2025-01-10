@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -10,10 +11,18 @@ module.exports = {
       title: "Landa",
       template: "index.html",
     }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
   ],
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
+  },
+  resolve: {
+    fallback: {
+      util: require.resolve("util/")
+    }
   },
 };
