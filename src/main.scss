@@ -1,0 +1,20 @@
+#main {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    width: 1280px;
+}
+
+#game {
+    border-right: 1px solid black;
+    height: 480px;
+    width: 640px;
+}
+
+#editor {
+    display: grid;
+    height: 480px;
+    overflow-y: auto;
+    width: 640px;
+}

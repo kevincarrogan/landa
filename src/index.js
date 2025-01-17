@@ -11,9 +11,10 @@ import p5 from "p5";
 import { minimalEditor } from "prism-code-editor/setups";
 import { Rocket } from "./rocket";
 import { get_parser } from "./parser";
+import "./main.scss";
 
-const width = 800;
-const height = 600;
+const width = 640;
+const height = 480;
 
 const roundToNearest = (toNearest, original) => {
   return Math.round(original / toNearest) * toNearest;
@@ -107,12 +108,16 @@ const mainSketch = (p) => {
 
 new p5(mainSketch);
 
+const $editor = document.querySelector("#editor");
+
 minimalEditor(
-  "#editor",
+  $editor,
   {
     theme: "github-light",
   },
-  () => console.log("ready")
+  () => {
+    $editor.shadowRoot.querySelector("textarea").focus();
+  }
 );
 
 const parser = get_parser();
