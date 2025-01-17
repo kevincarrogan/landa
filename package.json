@@ -7,7 +7,8 @@
     "build": "webpack",
     "start": "webpack serve --open --mode development",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "generateParser": "larkjs landa.lark -o src/parser.js"
   },
   "author": "",
   "devDependencies": {

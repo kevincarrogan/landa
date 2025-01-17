@@ -2,7 +2,9 @@ start: line*
 
 line: call _NEWLINE?
 
-call: FUNCTION_NAME "(" parameter ("," parameter)* ")"
+call: FUNCTION_NAME "(" parameters ")"
+
+parameters: parameter ("," " "* parameter)* 
 
 parameter: PARAMETER_NAME ":" " "* PARAMETER_VALUE
 

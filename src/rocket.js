@@ -15,7 +15,7 @@ class Rocket {
 
   applyThrust() {
     if (this.thrustForce) {
-      Body.setVelocity(this.body, { x: 0, y: this.thrustForce });
+      Body.setVelocity(this.body, { x: 0, y: -this.thrustForce });
     }
   }
 }

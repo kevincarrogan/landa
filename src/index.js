@@ -10,7 +10,7 @@ import {
 import p5 from "p5";
 import { minimalEditor } from "prism-code-editor/setups";
 import { Rocket } from "./rocket";
-import { get_parser } from "./parser";
+import { get_parser as getParser, Transformer } from "./parser";
 import "./main.scss";
 
 const width = 640;
@@ -110,15 +110,95 @@ new p5(mainSketch);
 
 const $editor = document.querySelector("#editor");
 
-minimalEditor(
+const editor = minimalEditor(
   $editor,
   {
     theme: "github-light",
   },
   () => {
-    $editor.shadowRoot.querySelector("textarea").focus();
+    editor.textarea.focus();
   }
 );
 
-const parser = get_parser();
+window.editor = editor;
+
+const parser = getParser();
 window.parser = parser;
+
+class FunctionTransform extends Transformer {
+  start(args) {
+    return args;
+  }
+
+  line(args) {
+    return args[0];
+  }
+
+  call([{value: functionName}, parameters]) {
+    return [functionName, parameters];
+  }
+
+  parameters(args) {
+    let mapped = {};
+
+    for (let [name, value] of args) {
+      mapped[name] = value;
+    }
+
+    return mapped;
+  }
+
+  parameter([{value: name}, {value: value}]) {
+    return [name, value];
+  }
+}
+
+const sleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const functions = {
+  setThrust: async ({to, for: _for}) => {
+    rocket.setThrust(to / 10);
+    await sleep(_for * 1000);
+    rocket.setThrust(0);
+  }
+}
+
+const runCalls = async (functionCalls) => {
+  const lines = editor.wrapper.children;
+
+  editor.setOptions({readOnly: true});
+  let index = 1;
+  for (const [functionName, parameters] of functionCalls) {
+    const element = document.createElement('div');
+
+    element.style.position = 'absolute';
+    element.style.inset = '0';
+    element.style.zIndex = '-1';
+    element.style.background = 'red';
+
+    lines[index].prepend(element);
+    await functions[functionName](parameters);
+    element.remove();
+    index++;
+  }
+  editor.setOptions({readOnly: false});
+}
+
+const $runButton = document.querySelector("#run");
+$runButton.addEventListener("click", () => {
+  const val = editor.textarea.value;
+  let tree;
+  try {
+    tree = parser.parse(val);
+  } catch (error) {
+    console.error(error);
+    return;
+  };
+
+  const transformer = new FunctionTransform();
+  const functionCalls = transformer.transform(tree);
+
+  runCalls(functionCalls);
+});
