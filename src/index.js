@@ -11,6 +11,7 @@ import p5 from "p5";
 import { minimalEditor } from "prism-code-editor/setups";
 import { Rocket } from "./rocket";
 import { get_parser as getParser, Transformer } from "./parser";
+import { sleep } from "./utils";
 import "./main.scss";
 
 const width = 640;
@@ -27,15 +28,11 @@ const engine = Engine.create({
   gravity: { x: 0, y: 0.16, scale: 0.001 },
 });
 
-const rocketBody = Bodies.fromVertices(
-  400,
-  300,
-  [
-    { x: 0, y: 60 },
-    { x: 60, y: 60 },
-    { x: 30, y: 0 },
-  ]
-);
+const rocketBody = Bodies.fromVertices(400, 300, [
+  { x: 0, y: 60 },
+  { x: 60, y: 60 },
+  { x: 30, y: 0 },
+]);
 const rocket = new Rocket(rocketBody, engine.gravity);
 
 window.rocket = rocket;
@@ -134,7 +131,7 @@ class FunctionTransform extends Transformer {
     return args[0];
   }
 
-  call([{value: functionName}, parameters]) {
+  call([{ value: functionName }, parameters]) {
     return [functionName, parameters];
   }
 
@@ -148,43 +145,39 @@ class FunctionTransform extends Transformer {
     return mapped;
   }
 
-  parameter([{value: name}, {value: value}]) {
+  parameter([{ value: name }, { value: value }]) {
     return [name, value];
   }
 }
 
-const sleep = (ms) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const functions = {
-  setThrust: async ({to, for: _for}) => {
+  setThrust: async ({ to, for: _for }) => {
     rocket.setThrust(to / 10);
     await sleep(_for * 1000);
     rocket.setThrust(0);
-  }
-}
+  },
+};
 
 const runCalls = async (functionCalls) => {
   const lines = editor.wrapper.children;
 
-  editor.setOptions({readOnly: true});
+  editor.setOptions({ readOnly: true });
   let index = 1;
   for (const [functionName, parameters] of functionCalls) {
-    const element = document.createElement('div');
+    const element = document.createElement("div");
 
-    element.style.position = 'absolute';
-    element.style.inset = '0';
-    element.style.zIndex = '-1';
-    element.style.background = 'red';
+    element.style.position = "absolute";
+    element.style.inset = "0";
+    element.style.zIndex = "-1";
+    element.style.background = "red";
 
     lines[index].prepend(element);
     await functions[functionName](parameters);
     element.remove();
     index++;
   }
-  editor.setOptions({readOnly: false});
-}
+  editor.setOptions({ readOnly: false });
+};
 
 const $runButton = document.querySelector("#run");
 $runButton.addEventListener("click", () => {
@@ -195,7 +188,7 @@ $runButton.addEventListener("click", () => {
   } catch (error) {
     console.error(error);
     return;
-  };
+  }
 
   const transformer = new FunctionTransform();
   const functionCalls = transformer.transform(tree);
