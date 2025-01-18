@@ -10,8 +10,9 @@ import {
 import p5 from "p5";
 import { minimalEditor } from "prism-code-editor/setups";
 import { Rocket } from "./rocket";
-import { get_parser as getParser, Transformer } from "./parser";
+import { get_parser as getParser } from "./parser";
 import { sleep } from "./utils";
+import { FunctionTransform } from "./transformers";
 import "./main.scss";
 
 const width = 640;
@@ -121,34 +122,6 @@ window.editor = editor;
 
 const parser = getParser();
 window.parser = parser;
-
-class FunctionTransform extends Transformer {
-  start(args) {
-    return args;
-  }
-
-  line(args) {
-    return args[0];
-  }
-
-  call([{ value: functionName }, parameters]) {
-    return [functionName, parameters];
-  }
-
-  parameters(args) {
-    let mapped = {};
-
-    for (let [name, value] of args) {
-      mapped[name] = value;
-    }
-
-    return mapped;
-  }
-
-  parameter([{ value: name }, { value: value }]) {
-    return [name, value];
-  }
-}
 
 const functions = {
   setThrust: async ({ to, for: _for }) => {
