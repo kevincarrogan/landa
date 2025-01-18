@@ -1,12 +1,4 @@
-import {
-  Bodies,
-  Body,
-  Composite,
-  Engine,
-  Events,
-  Runner,
-  Vertices,
-} from "matter-js";
+import { Bodies, Composite, Engine, Events, Runner, Vertices } from "matter-js";
 import p5 from "p5";
 import { minimalEditor } from "prism-code-editor/setups";
 import { Rocket } from "./rocket";
@@ -32,10 +24,6 @@ const rocketBody = Bodies.fromVertices(400, 300, [
   { x: 30, y: 0 },
 ]);
 const rocket = new Rocket(rocketBody, engine.gravity);
-
-window.rocket = rocket;
-window.rocketBody = rocketBody;
-window.Body = Body;
 
 const mainSketch = (p) => {
   const drawPixel = ({ x, y }) => {
@@ -115,10 +103,7 @@ const editor = minimalEditor(
   }
 );
 
-window.editor = editor;
-
 const parser = getParser();
-window.parser = parser;
 
 const functions = {
   setThrust: async ({ to, for: _for }) => {
