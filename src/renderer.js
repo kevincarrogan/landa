@@ -42,18 +42,10 @@ class Renderer {
         ) {
           const point = { x, y };
           if (this.game.contains(body, point)) {
-            if (x % 10 === 0) {
-              if (y % 10 === 0) {
-                p.fill(150);
-              } else {
-                p.fill(0);
-              }
+            if (x % 10 === y % 10) {
+              p.fill(0);
             } else {
-              if (y % 10 === 0) {
-                p.fill(0);
-              } else {
-                p.fill(150);
-              }
+              p.fill(150);
             }
             this.drawPixel(p, point);
           }
