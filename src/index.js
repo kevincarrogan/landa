@@ -1,6 +1,6 @@
 import { Bodies, Composite, Engine, Events, Runner, Vertices } from "matter-js";
 import p5 from "p5";
-import { minimalEditor } from "prism-code-editor/setups";
+import { Editor } from "./editor";
 import { Rocket } from "./rocket";
 import { get_parser as getParser } from "./parser";
 import { roundToNearest, sleep } from "./utils";
@@ -92,16 +92,7 @@ const mainSketch = (p) => {
 new p5(mainSketch);
 
 const $editor = document.querySelector("#editor");
-
-const editor = minimalEditor(
-  $editor,
-  {
-    theme: "github-light",
-  },
-  () => {
-    editor.textarea.focus();
-  }
-);
+const editor = new Editor($editor);
 
 const parser = getParser();
 
@@ -116,32 +107,24 @@ const functions = {
 const functionRunner = new FunctionRunner(functions);
 
 functionRunner.on("run:start", () => {
-  editor.setOptions({ readOnly: true });
+  editor.disable();
 });
 
-let element;
 functionRunner.on("call:start", (lineNumber) => {
-  element = document.createElement("div");
-  element.style.position = "absolute";
-  element.style.inset = "0";
-  element.style.zIndex = "-1";
-  element.style.background = "red";
-
-  const lines = editor.wrapper.children;
-  lines[lineNumber].prepend(element);
+  editor.highlightLine(lineNumber);
 });
 
-functionRunner.on("call:end", () => {
-  element.remove();
+functionRunner.on("call:end", (lineNumber) => {
+  editor.removeHighlight(lineNumber);
 });
 
 functionRunner.on("run:end", () => {
-  editor.setOptions({ readOnly: false });
+  editor.enable();
 });
 
 const $runButton = document.querySelector("#run");
 $runButton.addEventListener("click", () => {
-  const val = editor.textarea.value;
+  const val = editor.getValue();
   let tree;
   try {
     tree = parser.parse(val);
