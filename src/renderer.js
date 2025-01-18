@@ -1,5 +1,5 @@
 import p5 from "p5";
-import { roundToNearest } from "./utils";
+import { clamp, roundToNearest } from "./utils";
 
 const ROUND_TO = 5;
 const BOX_SIZE = 4;
@@ -42,11 +42,8 @@ class Renderer {
         ) {
           const point = { x, y };
           if (this.game.contains(body, point)) {
-            if (x % 10 === y % 10) {
-              p.fill(0);
-            } else {
-              p.fill(150);
-            }
+            const val = Math.abs((x % 10) - (y % 10));
+            p.fill(clamp(0, 1, val) * 150);
             this.drawPixel(p, point);
           }
         }
