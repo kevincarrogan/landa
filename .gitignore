@@ -133,3 +133,5 @@ dist
 .husky
 
 .python-version
+.envrc
+.venv
