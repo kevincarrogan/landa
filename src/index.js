@@ -43,6 +43,7 @@ const $runButton = document.querySelector("#run");
 const functionRunner = new FunctionRunner(functions);
 
 functionRunner.on("run:start", () => {
+  editor.clearHighlights();
   editor.disable();
   game.setup();
   game.run();
@@ -50,7 +51,11 @@ functionRunner.on("run:start", () => {
 });
 
 functionRunner.on("call:start", (lineNumber) => {
-  editor.highlightLine(lineNumber);
+  editor.highlightLine(lineNumber, editor.STYLES.HIGHLIGHT);
+});
+
+functionRunner.on("call:error", (lineNumber) => {
+  editor.highlightLine(lineNumber, editor.STYLES.ERROR);
 });
 
 functionRunner.on("call:end", (lineNumber) => {

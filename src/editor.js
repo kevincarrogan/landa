@@ -1,6 +1,11 @@
 import { minimalEditor } from "prism-code-editor/setups";
 
 class Editor {
+  STYLES = {
+    HIGHLIGHT: "yellow",
+    ERROR: "red",
+  };
+
   constructor($el) {
     this.setup($el);
     this.highlightMap = {};
@@ -26,12 +31,16 @@ class Editor {
     this.editor.setOptions({ readOnly: true });
   }
 
-  highlightLine(lineNumber) {
+  highlightLine(lineNumber, style) {
+    if (this.highlightMap[lineNumber]) {
+      this.removeHighlight(lineNumber);
+    }
+
     const element = document.createElement("div");
     element.style.position = "absolute";
     element.style.inset = "0";
     element.style.zIndex = "-1";
-    element.style.background = "red";
+    element.style.background = style;
 
     const lines = this.editor.wrapper.children;
     lines[lineNumber].prepend(element);
@@ -42,7 +51,14 @@ class Editor {
   removeHighlight(lineNumber) {
     const element = this.highlightMap[lineNumber];
     element.remove();
-    delete this.highlightLine[lineNumber];
+    delete this.highlightMap[lineNumber];
+  }
+
+  clearHighlights() {
+    for (const element of Object.values(this.highlightMap)) {
+      element.remove();
+    }
+    this.highlightMap = {};
   }
 
   getValue() {

@@ -11,7 +11,13 @@ class FunctionRunner extends EventEmitter {
     let index = 1;
     for (const [functionName, parameters] of functionCalls) {
       this.emit("call:start", index);
-      await this.functions[functionName](parameters);
+      try {
+        await this.functions[functionName](parameters);
+      } catch {
+        this.emit("call:error", index);
+        this.emit("run:end");
+        return;
+      }
       this.emit("call:end", index);
       index++;
     }
