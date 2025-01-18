@@ -11,16 +11,12 @@ import p5 from "p5";
 import { minimalEditor } from "prism-code-editor/setups";
 import { Rocket } from "./rocket";
 import { get_parser as getParser } from "./parser";
-import { sleep } from "./utils";
+import { roundToNearest, sleep } from "./utils";
 import { FunctionTransform } from "./transformers";
 import "./main.scss";
 
 const width = 640;
 const height = 480;
-
-const roundToNearest = (toNearest, original) => {
-  return Math.round(original / toNearest) * toNearest;
-};
 
 const ROUND_TO = 5;
 const BOX_SIZE = 4;
