@@ -30,6 +30,7 @@
     "webpack-dev-server": "^5.2.0"
   },
   "dependencies": {
+    "mathjs": "^14.0.1",
     "matter-js": "^0.20.0",
     "p5": "^1.11.2",
     "prism-code-editor": "^3.4.0",

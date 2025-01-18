@@ -1,3 +1,4 @@
+import { unit } from "mathjs";
 import { Game } from "./game";
 import { Renderer } from "./renderer";
 import { Editor } from "./editor";
@@ -25,6 +26,11 @@ const functions = {
     game.rocket.setThrust(to / 10);
     await sleep(_for * 1000);
     game.rocket.setThrust(0);
+  },
+
+  rotate: ({ by }) => {
+    const radians = unit(by, "deg").toNumber("rad");
+    game.rocket.rotate(radians);
   },
 };
 

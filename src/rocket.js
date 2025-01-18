@@ -1,22 +1,33 @@
-import { Body } from "matter-js";
+import Matter from "matter-js";
 
 class Rocket {
-  constructor(body, gravity) {
+  constructor(body) {
     this.body = body;
-    this.Body = Body;
-    this.gravity = gravity;
 
-    this.thrustForce = null;
+    this.speed = null;
   }
 
   setThrust(to) {
-    this.thrustForce = to;
+    this.speed = to;
   }
 
   applyThrust() {
-    if (this.thrustForce) {
-      Body.setVelocity(this.body, { x: 0, y: -this.thrustForce });
+    if (!this.speed) {
+      return;
     }
+
+    const angle = this.body.angle;
+
+    const newVelocity = Matter.Vector.create(
+      this.speed * Math.sin(angle),
+      -this.speed * Math.cos(angle)
+    );
+
+    Matter.Body.setVelocity(this.body, newVelocity);
+  }
+
+  rotate(by) {
+    Matter.Body.setAngle(this.body, by);
   }
 }
 
