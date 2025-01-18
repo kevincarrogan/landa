@@ -13,6 +13,7 @@ import { Rocket } from "./rocket";
 import { get_parser as getParser } from "./parser";
 import { roundToNearest, sleep } from "./utils";
 import { FunctionTransform } from "./transformers";
+import { FunctionRunner } from "./function-runner";
 import "./main.scss";
 
 const width = 640;
@@ -127,26 +128,31 @@ const functions = {
   },
 };
 
-const runCalls = async (functionCalls) => {
-  const lines = editor.wrapper.children;
+const functionRunner = new FunctionRunner(functions);
 
+functionRunner.on("run:start", () => {
   editor.setOptions({ readOnly: true });
-  let index = 1;
-  for (const [functionName, parameters] of functionCalls) {
-    const element = document.createElement("div");
+});
 
-    element.style.position = "absolute";
-    element.style.inset = "0";
-    element.style.zIndex = "-1";
-    element.style.background = "red";
+let element;
+functionRunner.on("call:start", (lineNumber) => {
+  element = document.createElement("div");
+  element.style.position = "absolute";
+  element.style.inset = "0";
+  element.style.zIndex = "-1";
+  element.style.background = "red";
 
-    lines[index].prepend(element);
-    await functions[functionName](parameters);
-    element.remove();
-    index++;
-  }
+  const lines = editor.wrapper.children;
+  lines[lineNumber].prepend(element);
+});
+
+functionRunner.on("call:end", () => {
+  element.remove();
+});
+
+functionRunner.on("run:end", () => {
   editor.setOptions({ readOnly: false });
-};
+});
 
 const $runButton = document.querySelector("#run");
 $runButton.addEventListener("click", () => {
@@ -162,5 +168,5 @@ $runButton.addEventListener("click", () => {
   const transformer = new FunctionTransform();
   const functionCalls = transformer.transform(tree);
 
-  runCalls(functionCalls);
+  functionRunner.run(functionCalls);
 });
