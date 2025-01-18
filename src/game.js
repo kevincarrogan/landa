@@ -30,11 +30,13 @@ class Game {
     this.composite = Composite.add(engine.world, bodies);
 
     const runner = Runner.create();
-    Runner.run(runner, engine);
 
     Events.on(runner, "beforeUpdate", () => {
       this.rocket.applyThrust();
     });
+
+    this.runner = runner;
+    this.engine = engine;
   }
 
   getBodies() {
@@ -43,6 +45,14 @@ class Game {
 
   contains(body, point) {
     return Vertices.contains(body.vertices, point);
+  }
+
+  run() {
+    Runner.run(this.runner, this.engine);
+  }
+
+  pause() {
+    Runner.stop(this.runner);
   }
 }
 

@@ -32,12 +32,21 @@ const functions = {
     const radians = unit(by, "deg").toNumber("rad");
     game.rocket.rotate(radians);
   },
+
+  wait: async ({ for: _for }) => {
+    await sleep(_for * 1000);
+  },
 };
+
+const $runButton = document.querySelector("#run");
 
 const functionRunner = new FunctionRunner(functions);
 
 functionRunner.on("run:start", () => {
   editor.disable();
+  game.setup();
+  game.run();
+  $runButton.disabled = true;
 });
 
 functionRunner.on("call:start", (lineNumber) => {
@@ -50,9 +59,10 @@ functionRunner.on("call:end", (lineNumber) => {
 
 functionRunner.on("run:end", () => {
   editor.enable();
+  game.pause();
+  $runButton.disabled = false;
 });
 
-const $runButton = document.querySelector("#run");
 $runButton.addEventListener("click", () => {
   const val = editor.getValue();
   let tree;
