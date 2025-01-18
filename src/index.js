@@ -74,7 +74,7 @@ $runButton.addEventListener("click", () => {
   try {
     tree = parser.parse(val);
   } catch (error) {
-    console.error(error);
+    editor.highlightLine(error.line, editor.STYLES.ERROR);
     return;
   }
 
