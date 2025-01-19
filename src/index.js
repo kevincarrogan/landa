@@ -1,5 +1,10 @@
 import Matter from "matter-js";
-import { unit } from "mathjs";
+import {
+  create,
+  createUnitDependencies,
+  evaluateDependencies,
+  unitDependencies,
+} from "mathjs";
 import { Game } from "./game";
 import { Renderer } from "./renderer";
 import { Editor } from "./editor";
@@ -8,6 +13,15 @@ import { sleep } from "./utils";
 import { FunctionTransform } from "./transformers";
 import { FunctionRunner } from "./function-runner";
 import "./main.scss";
+
+const math = create({
+  createUnitDependencies,
+  evaluateDependencies,
+  unitDependencies,
+});
+math.createUnit("percent", "0.01");
+
+window.math = math;
 
 const width = 640;
 const height = 480;
@@ -22,13 +36,13 @@ const editor = new Editor($editor);
 
 const functions = {
   setThrust: async ({ to, for: _for }) => {
-    game.rocket.setThrust(to / 100);
+    game.rocket.setThrust(math.evaluate(`${to} percent`));
     await sleep(_for * 1000);
     game.rocket.setThrust(0);
   },
 
-  rotate: ({ by }) => {
-    const radians = unit(by, "deg").toNumber("rad");
+  rotate: ({ to }) => {
+    const radians = math.unit(to, "deg").toNumber("rad");
     game.rocket.rotate(radians);
   },
 
