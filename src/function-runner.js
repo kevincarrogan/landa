@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import _ from "lodash/lang";
-import parseFunc from "reflection-js/parseFunc";
+import parseFunc from "reflection-js/parsefunc";
 
 class FunctionRunner extends EventEmitter {
   constructor() {
