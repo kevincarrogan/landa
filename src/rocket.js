@@ -26,8 +26,12 @@ class Rocket {
     Matter.Body.applyForce(this.body, this.body.position, force);
   }
 
-  rotate(by) {
-    Matter.Body.setAngle(this.body, by);
+  rotateTo(to) {
+    Matter.Body.setAngle(this.body, to);
+  }
+
+  rotateBy(by) {
+    Matter.Body.setAngle(this.body, this.body.angle + by);
   }
 }
 

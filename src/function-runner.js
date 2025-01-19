@@ -1,9 +1,36 @@
 import { EventEmitter } from "events";
+import _ from "lodash/lang";
+import parseFunc from "reflection-js/parseFunc";
 
 class FunctionRunner extends EventEmitter {
-  constructor(functions) {
+  constructor() {
     super();
-    this.functions = functions;
+    this.functions = [];
+  }
+
+  register(func) {
+    this.functions.push(func);
+  }
+
+  async callFunction(functionName, parameters) {
+    for (const f of this.functions) {
+      const { name, params } = parseFunc(f);
+      if (name !== functionName) {
+        continue;
+      }
+      const normalisedParams = Object.keys(params).map((n) =>
+        n.replace(/^_/, "")
+      );
+      if (!_.isEqual(Object.keys(parameters), normalisedParams)) {
+        continue;
+      }
+      await f.apply(
+        f,
+        normalisedParams.map((t) => parameters[t])
+      );
+      return;
+    }
+    throw new Error(`Function ${functionName} not found`);
   }
 
   async run(functionCalls) {
@@ -12,9 +39,8 @@ class FunctionRunner extends EventEmitter {
     for (const [functionName, parameters] of functionCalls) {
       this.emit("call:start", index);
       try {
-        await this.functions[functionName](parameters);
+        await this.callFunction(functionName, parameters);
       } catch (error) {
-        console.log(functionName, parameters);
         console.error(error);
         this.emit("call:error", index);
         this.emit("run:end");

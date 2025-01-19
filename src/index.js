@@ -19,22 +19,6 @@ new Renderer(game, $canvas, width, height);
 const $editor = document.querySelector("#editor");
 const editor = new Editor($editor);
 
-const functions = {
-  setThrust: async ({ to, for: _for }) => {
-    game.rocket.setThrust(to.value);
-    await sleep(_for.toNumber("ms"));
-    game.rocket.setThrust(0);
-  },
-
-  rotate: ({ to }) => {
-    game.rocket.rotate(to.toNumber("rad"));
-  },
-
-  wait: async ({ for: _for }) => {
-    await sleep(_for.toNumber("ms"));
-  },
-};
-
 const $playButton = document.querySelector("#play");
 $playButton.addEventListener("click", () => {
   game.setup();
@@ -45,7 +29,29 @@ $playButton.addEventListener("click", () => {
 
 const $runButton = document.querySelector("#run");
 
-const functionRunner = new FunctionRunner(functions);
+const functionRunner = new FunctionRunner();
+
+functionRunner.register(async function setThrust(to, _for) {
+  game.rocket.setThrust(to.value);
+  await sleep(_for.toNumber("ms"));
+  game.rocket.setThrust(0);
+});
+
+functionRunner.register(function setThrust(to) {
+  game.rocket.setThrust(to.value);
+});
+
+functionRunner.register(function rotate(to) {
+  game.rocket.rotateTo(to.toNumber("rad"));
+});
+
+functionRunner.register(function rotate(by) {
+  game.rocket.rotateBy(by.toNumber("rad"));
+});
+
+functionRunner.register(async function wait(_for) {
+  await sleep(_for.toNumber("ms"));
+});
 
 functionRunner.on("run:start", () => {
   editor.clearHighlights();
