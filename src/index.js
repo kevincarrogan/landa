@@ -1,3 +1,4 @@
+import Matter from "matter-js";
 import { unit } from "mathjs";
 import { Game } from "./game";
 import { Renderer } from "./renderer";
@@ -19,11 +20,9 @@ new Renderer(game, $canvas, width, height);
 const $editor = document.querySelector("#editor");
 const editor = new Editor($editor);
 
-const parser = getParser();
-
 const functions = {
   setThrust: async ({ to, for: _for }) => {
-    game.rocket.setThrust(to / 10);
+    game.rocket.setThrust(to / 100);
     await sleep(_for * 1000);
     game.rocket.setThrust(0);
   },
@@ -37,6 +36,14 @@ const functions = {
     await sleep(_for * 1000);
   },
 };
+
+const $playButton = document.querySelector("#play");
+$playButton.addEventListener("click", () => {
+  game.setup();
+  game.run();
+  window.Matter = Matter;
+  window.rocket = game.rocket;
+});
 
 const $runButton = document.querySelector("#run");
 
@@ -68,6 +75,7 @@ functionRunner.on("run:end", () => {
   $runButton.disabled = false;
 });
 
+const parser = getParser();
 $runButton.addEventListener("click", () => {
   const val = editor.getValue();
   let tree;

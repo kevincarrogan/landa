@@ -14,9 +14,9 @@ class Game {
     });
 
     const rocketBody = Bodies.fromVertices(400, 300, [
-      { x: 0, y: 60 },
-      { x: 60, y: 60 },
-      { x: 30, y: 0 },
+      { x: 0, y: 40 },
+      { x: 40, y: 40 },
+      { x: 20, y: 0 },
     ]);
     this.rocket = new Rocket(rocketBody, engine.gravity);
 

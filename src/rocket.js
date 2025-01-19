@@ -1,14 +1,15 @@
 import Matter from "matter-js";
 
 class Rocket {
-  constructor(body) {
+  constructor(body, gravity) {
     this.body = body;
+    this.gravity = gravity;
 
     this.speed = null;
   }
 
   setThrust(to) {
-    this.speed = to;
+    this.speed = to * this.gravity.y * this.gravity.scale * 10;
   }
 
   applyThrust() {
@@ -17,13 +18,12 @@ class Rocket {
     }
 
     const angle = this.body.angle;
-
-    const newVelocity = Matter.Vector.create(
+    const force = Matter.Vector.create(
       this.speed * Math.sin(angle),
       -this.speed * Math.cos(angle)
     );
 
-    Matter.Body.setVelocity(this.body, newVelocity);
+    Matter.Body.applyForce(this.body, this.body.position, force);
   }
 
   rotate(by) {
