@@ -8,7 +8,7 @@ class Editor {
 
   constructor($el) {
     this.setup($el);
-    this.highlightMap = {};
+    this.highlightMap = new Map();
   }
 
   setup($el) {
@@ -32,7 +32,7 @@ class Editor {
   }
 
   highlightLine(lineNumber, style) {
-    if (this.highlightMap[lineNumber]) {
+    if (this.highlightMap.has(lineNumber)) {
       this.removeHighlight(lineNumber);
     }
 
@@ -45,20 +45,20 @@ class Editor {
     const lines = this.editor.wrapper.children;
     lines[lineNumber].prepend(element);
 
-    this.highlightMap[lineNumber] = element;
+    this.highlightMap.set(lineNumber, element);
   }
 
   removeHighlight(lineNumber) {
-    const element = this.highlightMap[lineNumber];
+    const element = this.highlightMap.get(lineNumber);
     element.remove();
-    delete this.highlightMap[lineNumber];
+    this.highlightMap.delete(lineNumber);
   }
 
   clearHighlights() {
     for (const element of Object.values(this.highlightMap)) {
       element.remove();
     }
-    this.highlightMap = {};
+    this.highlightMap.clear();
   }
 
   getValue() {
