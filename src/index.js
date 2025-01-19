@@ -37,7 +37,7 @@ const editor = new Editor($editor);
 const functions = {
   setThrust: async ({ to, for: _for }) => {
     game.rocket.setThrust(math.evaluate(`${to} percent`));
-    await sleep(_for * 1000);
+    await sleep(math.evaluate(`${_for}s`).to("ms").toNumber());
     game.rocket.setThrust(0);
   },
 
