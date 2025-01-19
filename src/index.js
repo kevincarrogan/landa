@@ -80,7 +80,7 @@ functionRunner.on("call:error", (lineNumber) => {
 });
 
 functionRunner.on("call:end", (lineNumber) => {
-  editor.removeHighlight(lineNumber);
+  setTimeout(() => editor.removeHighlight(lineNumber), 50);
 });
 
 functionRunner.on("run:end", () => {
