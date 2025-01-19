@@ -13,7 +13,9 @@ class FunctionRunner extends EventEmitter {
       this.emit("call:start", index);
       try {
         await this.functions[functionName](parameters);
-      } catch {
+      } catch (error) {
+        console.log(functionName, parameters);
+        console.error(error);
         this.emit("call:error", index);
         this.emit("run:end");
         return;

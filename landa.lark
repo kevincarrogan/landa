@@ -6,11 +6,15 @@ call: FUNCTION_NAME "(" parameters ")"
 
 parameters: parameter ("," " "* parameter)* 
 
-parameter: PARAMETER_NAME ":" " "* PARAMETER_VALUE
+parameter: PARAMETER_NAME ":" " "* parameter_value
+
+parameter_value: ESCAPED_STRING | int_with_unit | INT
+
+int_with_unit: INT _UNIT
 
 FUNCTION_NAME: CNAME
 PARAMETER_NAME: CNAME
-PARAMETER_VALUE: ESCAPED_STRING | INT
+_UNIT: "%" | "s" | "ms" | "deg" | "rad"
 _NEWLINE: "\n"
 
 %import common.CNAME

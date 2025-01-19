@@ -1,4 +1,17 @@
+import {
+  create,
+  createUnitDependencies,
+  evaluateDependencies,
+  unitDependencies,
+} from "mathjs";
 import { Transformer } from "./parser";
+
+const math = create({
+  createUnitDependencies,
+  evaluateDependencies,
+  unitDependencies,
+});
+math.createUnit("percent", "0.01");
 
 class FunctionTransform extends Transformer {
   start(args) {
@@ -23,8 +36,31 @@ class FunctionTransform extends Transformer {
     return mapped;
   }
 
-  parameter([{ value: name }, { value: value }]) {
+  parameter([{ value: name }, value]) {
     return [name, value];
+  }
+
+  parameter_value([value]) {
+    return value;
+  }
+
+  INT({ value }) {
+    return math.unit(value).toNumber();
+  }
+
+  STRING({ value }) {
+    return value;
+  }
+
+  int_with_unit([val, unit]) {
+    return math.unit(val, unit);
+  }
+
+  UNIT({ value }) {
+    if (value === "%") {
+      value = "percent";
+    }
+    return math.unit(value);
   }
 }
 

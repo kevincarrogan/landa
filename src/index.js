@@ -1,10 +1,4 @@
 import Matter from "matter-js";
-import {
-  create,
-  createUnitDependencies,
-  evaluateDependencies,
-  unitDependencies,
-} from "mathjs";
 import { Game } from "./game";
 import { Renderer } from "./renderer";
 import { Editor } from "./editor";
@@ -13,15 +7,6 @@ import { sleep } from "./utils";
 import { FunctionTransform } from "./transformers";
 import { FunctionRunner } from "./function-runner";
 import "./main.scss";
-
-const math = create({
-  createUnitDependencies,
-  evaluateDependencies,
-  unitDependencies,
-});
-math.createUnit("percent", "0.01");
-
-window.math = math;
 
 const width = 640;
 const height = 480;
@@ -36,18 +21,17 @@ const editor = new Editor($editor);
 
 const functions = {
   setThrust: async ({ to, for: _for }) => {
-    game.rocket.setThrust(math.evaluate(`${to} percent`));
-    await sleep(math.evaluate(`${_for}s`).to("ms").toNumber());
+    game.rocket.setThrust(to.value);
+    await sleep(_for.toNumber("ms"));
     game.rocket.setThrust(0);
   },
 
   rotate: ({ to }) => {
-    const radians = math.unit(to, "deg").toNumber("rad");
-    game.rocket.rotate(radians);
+    game.rocket.rotate(to.toNumber("rad"));
   },
 
   wait: async ({ for: _for }) => {
-    await sleep(_for * 1000);
+    await sleep(_for.toNumber("ms"));
   },
 };
 
@@ -97,6 +81,7 @@ $runButton.addEventListener("click", () => {
     tree = parser.parse(val);
   } catch (error) {
     editor.highlightLine(error.line, editor.STYLES.ERROR);
+    console.error(error);
     return;
   }
 
