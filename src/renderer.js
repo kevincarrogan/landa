@@ -26,25 +26,43 @@ class Renderer {
     p.createCanvas(this.width, this.height, this.$el);
   }
 
+  getCameraBounds() {
+    const position = this.game.rocket.getPosition();
+    const min = {
+      x: position.x - this.width / 2,
+      y: position.y - this.height / 2,
+    };
+    const max = {
+      x: min.x + this.width,
+      y: min.y + this.height,
+    };
+
+    return { min, max };
+  }
+
   draw(p) {
     p.background(255);
     p.noStroke();
-    for (const body of this.game.getBodies()) {
+    const cameraBounds = this.getCameraBounds();
+    for (const body of this.game.getBodies(cameraBounds)) {
       for (
-        let x = roundToNearest(ROUND_TO, body.bounds.min.x);
-        x < body.bounds.max.x;
+        let x = roundToNearest(ROUND_TO, cameraBounds.min.x);
+        x < cameraBounds.max.x;
         x += ROUND_TO
       ) {
         for (
-          let y = roundToNearest(ROUND_TO, body.bounds.min.y);
-          y < body.bounds.max.y;
+          let y = roundToNearest(ROUND_TO, cameraBounds.min.y);
+          y < cameraBounds.max.y;
           y += ROUND_TO
         ) {
           const point = { x, y };
           if (this.game.contains(body, point)) {
             const val = Math.abs((x % 10) - (y % 10));
             p.fill(clamp(0, 1, val) * 150);
-            this.drawPixel(p, point);
+            this.drawPixel(p, {
+              x: x - roundToNearest(ROUND_TO, cameraBounds.min.x),
+              y: y - roundToNearest(ROUND_TO, cameraBounds.min.y),
+            });
           }
         }
       }

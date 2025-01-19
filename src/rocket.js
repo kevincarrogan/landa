@@ -33,6 +33,10 @@ class Rocket {
   rotateBy(by) {
     Matter.Body.setAngle(this.body, this.body.angle + by);
   }
+
+  getPosition() {
+    return this.body.position;
+  }
 }
 
 export { Rocket };
