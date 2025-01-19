@@ -1,4 +1,3 @@
-import Matter from "matter-js";
 import { Game } from "./game";
 import { Renderer } from "./renderer";
 import { Editor } from "./editor";
@@ -23,14 +22,9 @@ const $playButton = document.querySelector("#play");
 $playButton.addEventListener("click", () => {
   game.setup();
   game.run();
-  window.Matter = Matter;
-  window.rocket = game.rocket;
 });
 
-const $runButton = document.querySelector("#run");
-
 const functionRunner = new FunctionRunner();
-
 functionRunner.register(async function setThrust(to, _for) {
   game.rocket.setThrust(to.value);
   await sleep(_for.toNumber("ms"));
@@ -52,6 +46,8 @@ functionRunner.register(function rotate(by) {
 functionRunner.register(async function wait(_for) {
   await sleep(_for.toNumber("ms"));
 });
+
+const $runButton = document.querySelector("#run");
 
 functionRunner.on("run:start", () => {
   editor.clearHighlights();
