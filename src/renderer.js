@@ -1,5 +1,5 @@
 import p5 from "p5";
-import { clamp, roundToNearest } from "./utils";
+import { roundToNearest } from "./utils";
 
 const ROUND_TO = 5;
 const BOX_SIZE = 4;
@@ -40,29 +40,33 @@ class Renderer {
     return { min, max };
   }
 
+  translatePoint(bounds, {x, y}) {
+    return {
+      x: roundToNearest(ROUND_TO, x, Math.floor) - roundToNearest(ROUND_TO, bounds.min.x, Math.floor),
+      y: roundToNearest(ROUND_TO, y, Math.floor) - roundToNearest(ROUND_TO, bounds.min.y, Math.floor),
+    };
+  }
+
   draw(p) {
     p.background(255);
     p.noStroke();
     const cameraBounds = this.getCameraBounds();
     for (const body of this.game.getBodies(cameraBounds)) {
       for (
-        let x = roundToNearest(ROUND_TO, cameraBounds.min.x);
-        x < cameraBounds.max.x;
+        let x = cameraBounds.min.x;
+        x <= cameraBounds.max.x;
         x += ROUND_TO
       ) {
         for (
-          let y = roundToNearest(ROUND_TO, cameraBounds.min.y);
-          y < cameraBounds.max.y;
+          let y = cameraBounds.min.y;
+          y <= cameraBounds.max.y;
           y += ROUND_TO
         ) {
           const point = { x, y };
           if (this.game.contains(body, point)) {
-            const val = Math.abs((x % 10) - (y % 10));
-            p.fill(clamp(0, 1, val) * 150);
-            this.drawPixel(p, {
-              x: x - roundToNearest(ROUND_TO, cameraBounds.min.x),
-              y: y - roundToNearest(ROUND_TO, cameraBounds.min.y),
-            });
+            const translatedPoint = this.translatePoint(cameraBounds, point);
+            p.fill(0);
+            this.drawPixel(p, translatedPoint);
           }
         }
       }

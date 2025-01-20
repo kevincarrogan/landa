@@ -1,5 +1,5 @@
-const roundToNearest = (toNearest, original) => {
-  return Math.round(original / toNearest) * toNearest;
+const roundToNearest = (toNearest, original, round = Math.round) => {
+  return round(original / toNearest) * toNearest;
 };
 
 const sleep = (ms) => {
