@@ -1,12 +1,14 @@
 import { minimalEditor } from "prism-code-editor/setups";
+import { EventEmitter } from "events";
 
-class Editor {
+class Editor extends EventEmitter {
   STYLES = {
     HIGHLIGHT: "yellow",
     ERROR: "red",
   };
 
   constructor($el) {
+    super();
     this.setup($el);
     this.highlightMap = new Map();
   }
@@ -21,6 +23,18 @@ class Editor {
         this.editor.textarea.focus();
       }
     );
+
+    const oldEnterCallback = this.editor.keyCommandMap.Enter;
+    this.editor.keyCommandMap.Enter = (e, selection, value) => {
+      if (e.metaKey) {
+        this.emit("submit");
+        return true;
+      }
+      if (!oldEnterCallback) {
+        return;
+      }
+      return oldEnterCallback(e, selection, value);
+    }
   }
 
   enable() {

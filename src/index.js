@@ -75,8 +75,7 @@ functionRunner.on("run:end", () => {
   $runButton.disabled = false;
 });
 
-const parser = getParser();
-$runButton.addEventListener("click", () => {
+const runCode = () => {
   const val = editor.getValue();
   let tree;
   try {
@@ -91,4 +90,9 @@ $runButton.addEventListener("click", () => {
   const functionCalls = transformer.transform(tree);
 
   functionRunner.run(functionCalls);
-});
+}
+
+const parser = getParser();
+$runButton.addEventListener("click", () => runCode());
+
+editor.on("submit", () => runCode());
