@@ -39,6 +39,7 @@ class Game {
 
     Matter.Events.on(runner, "beforeUpdate", () => {
       this.rocket.applyThrust();
+      this.rocket.applyAngle();
     });
 
     this.runner = runner;

@@ -1,4 +1,12 @@
 import Matter from "matter-js";
+import {
+  create,
+  unitDependencies,
+} from "mathjs";
+
+const math = create({
+  unitDependencies,
+});
 
 class Rocket {
   constructor(body, gravity) {
@@ -6,6 +14,7 @@ class Rocket {
     this.gravity = gravity;
 
     this.speed = null;
+    this.desiredAngle = null;
   }
 
   setThrust(to) {
@@ -27,11 +36,17 @@ class Rocket {
   }
 
   rotateTo(to) {
-    Matter.Body.setAngle(this.body, to);
+    this.desiredAngle = to;
   }
 
   rotateBy(by) {
-    Matter.Body.setAngle(this.body, this.body.angle + by);
+    this.desiredAngle = this.body.angle + by;
+  }
+
+  applyAngle() {
+    if (this.desiredAngle && this.body.angle < this.desiredAngle) {
+      Matter.Body.setAngle(this.body, this.body.angle + math.unit("5deg").toNumber("rad"));
+    }
   }
 
   getPosition() {
