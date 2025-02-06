@@ -1,8 +1,6 @@
 import Matter from "matter-js";
-import {
-  create,
-  unitDependencies,
-} from "mathjs";
+import { create, unitDependencies } from "mathjs";
+import _ from "lodash/number";
 
 const math = create({
   unitDependencies,
@@ -44,8 +42,12 @@ class Rocket {
   }
 
   applyAngle() {
-    if (this.desiredAngle && this.body.angle < this.desiredAngle) {
-      Matter.Body.setAngle(this.body, this.body.angle + math.unit("5deg").toNumber("rad"));
+    if (this.desiredAngle !== null && this.body.angle !== this.desiredAngle) {
+      const direction = _.clamp(this.desiredAngle - this.body.angle, -1, 1);
+      Matter.Body.setAngle(
+        this.body,
+        this.body.angle + math.unit("5deg").toNumber("rad") * direction
+      );
     }
   }
 
