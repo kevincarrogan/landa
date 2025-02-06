@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 module.exports = {
   entry: {
@@ -12,7 +12,7 @@ module.exports = {
       template: "index.html",
     }),
     new webpack.ProvidePlugin({
-      process: 'process/browser',
+      process: "process/browser",
     }),
   ],
   output: {
@@ -22,19 +22,18 @@ module.exports = {
   },
   resolve: {
     fallback: {
-      util: require.resolve("util/")
-    }
+      util: require.resolve("util/"),
+    },
   },
   module: {
     rules: [
       {
         test: /\.s[ac]ss$/i,
-        use: [
-          "style-loader",
-          "css-loader",
-          "sass-loader",
-        ],
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
     ],
+  },
+  optimization: {
+    minimize: false,
   },
 };
