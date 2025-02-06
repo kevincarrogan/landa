@@ -13,8 +13,21 @@
 }
 
 #editor {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     height: 480px;
     overflow-y: auto;
     width: 640px;
+}
+
+#editor-wrapper {
+    flex: 1;
+}
+
+#actions {
+    border-top: 1px solid black;
+    display: flex;
+    gap: 10px;
+    justify-content: right;
+    padding: 10px;
 }

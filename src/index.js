@@ -15,7 +15,7 @@ const game = new Game(width, height);
 const $canvas = document.querySelector("#canvas");
 new Renderer(game, $canvas, width, height);
 
-const $editor = document.querySelector("#editor");
+const $editor = document.querySelector("#editor-wrapper");
 const editor = new Editor($editor);
 
 const $playButton = document.querySelector("#play");
@@ -90,7 +90,7 @@ const runCode = () => {
   const functionCalls = transformer.transform(tree);
 
   functionRunner.run(functionCalls);
-}
+};
 
 const parser = getParser();
 $runButton.addEventListener("click", () => runCode());
