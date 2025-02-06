@@ -13,25 +13,31 @@ class Game {
       gravity: { x: 0, y: 0.16, scale: 0.001 },
     });
 
-    const rocketBody = Matter.Bodies.fromVertices(400, 300, [
-      { x: 0, y: 40 },
-      { x: 40, y: 40 },
-      { x: 20, y: 0 },
-    ]);
+    const ground = Matter.Bodies.rectangle(
+      this.width / 2,
+      this.height - 10,
+      this.width,
+      20,
+      {
+        isStatic: true,
+      }
+    );
+
+    const ROCKET_HEIGHT = 40;
+    const ROCKET_WIDTH = 40;
+
+    const rocketBody = Matter.Bodies.fromVertices(
+      ground.bounds.min.x + ROCKET_WIDTH / 2 + 20,
+      ground.bounds.min.y - ROCKET_HEIGHT / 2,
+      [
+        { x: 0, y: ROCKET_HEIGHT },
+        { x: ROCKET_HEIGHT, y: ROCKET_HEIGHT },
+        { x: ROCKET_WIDTH / 2, y: 0 },
+      ]
+    );
     this.rocket = new Rocket(rocketBody, engine.gravity);
 
-    const bodies = [
-      rocketBody,
-      Matter.Bodies.rectangle(
-        this.width / 2,
-        this.height - 10,
-        this.width,
-        20,
-        {
-          isStatic: true,
-        }
-      ),
-    ];
+    const bodies = [rocketBody, ground];
 
     this.composite = Matter.Composite.add(engine.world, bodies);
 
