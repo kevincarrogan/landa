@@ -5,6 +5,7 @@ import { get_parser as getParser } from "./parser";
 import { sleep } from "./utils";
 import { FunctionTransform } from "./transformers";
 import { FunctionRunner } from "./function-runner";
+import { EditorStorage } from "./editor-storage";
 import "./main.scss";
 
 const width = 640;
@@ -15,8 +16,10 @@ const game = new Game(width, height);
 const $canvas = document.querySelector("#canvas");
 new Renderer(game, $canvas, width, height);
 
+const storage = new EditorStorage();
+
 const $editor = document.querySelector("#editor-wrapper");
-const editor = new Editor($editor);
+const editor = new Editor($editor, storage.get());
 
 const $playButton = document.querySelector("#play");
 $playButton.addEventListener("click", () => {
@@ -96,3 +99,4 @@ const parser = getParser();
 $runButton.addEventListener("click", () => runCode());
 
 editor.on("submit", () => runCode());
+editor.on("change", (value) => storage.set(value));

@@ -7,17 +7,21 @@ class Editor extends EventEmitter {
     ERROR: "red",
   };
 
-  constructor($el) {
+  constructor($el, initialValue) {
     super();
-    this.setup($el);
+    this.setup($el, initialValue);
     this.highlightMap = new Map();
   }
 
-  setup($el) {
+  setup($el, initialValue) {
     this.editor = minimalEditor(
       $el,
       {
         theme: "github-light",
+        value: initialValue,
+        onUpdate: (value) => {
+          this.emit("change", value);
+        },
       },
       () => {
         this.editor.textarea.focus();
@@ -34,7 +38,7 @@ class Editor extends EventEmitter {
         return;
       }
       return oldEnterCallback(e, selection, value);
-    }
+    };
   }
 
   enable() {
