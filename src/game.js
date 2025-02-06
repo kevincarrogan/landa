@@ -41,7 +41,14 @@ class Game {
     );
     this.rocket = new Rocket(rocketBody, engine.gravity);
 
-    const bodies = [rocketBody, ground];
+    const landingPad = Matter.Bodies.rectangle(
+      400,
+      ground.bounds.max.y - 10 - 20,
+      60,
+      20
+    );
+
+    const bodies = [rocketBody, ground, landingPad];
 
     this.composite = Matter.Composite.add(engine.world, bodies);
 
