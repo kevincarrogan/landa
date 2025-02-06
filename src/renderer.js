@@ -1,8 +1,9 @@
 import p5 from "p5";
 import { roundToNearest } from "./utils";
 
-const ROUND_TO = 5;
-const BOX_SIZE = 4;
+const MARGIN = 1;
+const BOX_SIZE = 3;
+const ROUND_TO = BOX_SIZE + MARGIN;
 
 class Renderer {
   constructor(game, $el, width, height) {
@@ -40,10 +41,14 @@ class Renderer {
     return { min, max };
   }
 
-  translatePoint(bounds, {x, y}) {
+  translatePoint(bounds, { x, y }) {
     return {
-      x: roundToNearest(ROUND_TO, x, Math.floor) - roundToNearest(ROUND_TO, bounds.min.x, Math.floor),
-      y: roundToNearest(ROUND_TO, y, Math.floor) - roundToNearest(ROUND_TO, bounds.min.y, Math.floor),
+      x:
+        roundToNearest(ROUND_TO, x, Math.floor) -
+        roundToNearest(ROUND_TO, bounds.min.x, Math.floor),
+      y:
+        roundToNearest(ROUND_TO, y, Math.floor) -
+        roundToNearest(ROUND_TO, bounds.min.y, Math.floor),
     };
   }
 
@@ -52,11 +57,7 @@ class Renderer {
     p.noStroke();
     const cameraBounds = this.getCameraBounds();
     for (const body of this.game.getBodies(cameraBounds)) {
-      for (
-        let x = cameraBounds.min.x;
-        x <= cameraBounds.max.x;
-        x += ROUND_TO
-      ) {
+      for (let x = cameraBounds.min.x; x <= cameraBounds.max.x; x += ROUND_TO) {
         for (
           let y = cameraBounds.min.y;
           y <= cameraBounds.max.y;
