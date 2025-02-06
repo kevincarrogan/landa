@@ -13,24 +13,43 @@ class Game {
       gravity: { x: 0, y: 0.16, scale: 0.001 },
     });
 
+    const STATIC_CATEGORY = 0x0001;
+    const ROCKET_CATEGORY = 0x0002;
+
     const ground = Matter.Bodies.rectangle(
       this.width / 2,
       this.height - 10,
       this.width,
       20,
       {
+        collisionFilter: {
+          category: STATIC_CATEGORY,
+          mask: ROCKET_CATEGORY,
+        },
         isStatic: true,
+        label: "ground",
       }
     );
 
     const ROCKET_HEIGHT = 40;
     const ROCKET_WIDTH = 40;
 
-    const rocketBody = Matter.Bodies.fromVertices(0, 0, [
-      { x: 0, y: ROCKET_HEIGHT },
-      { x: ROCKET_HEIGHT, y: ROCKET_HEIGHT },
-      { x: ROCKET_WIDTH / 2, y: 0 },
-    ]);
+    const rocketBody = Matter.Bodies.fromVertices(
+      0,
+      0,
+      [
+        { x: 0, y: ROCKET_HEIGHT },
+        { x: ROCKET_HEIGHT, y: ROCKET_HEIGHT },
+        { x: ROCKET_WIDTH / 2, y: 0 },
+      ],
+      {
+        label: "rocket",
+        collisionFilter: {
+          category: ROCKET_CATEGORY,
+          mask: STATIC_CATEGORY,
+        },
+      }
+    );
 
     Matter.Body.setPosition(
       rocketBody,
@@ -45,7 +64,15 @@ class Game {
       400,
       ground.bounds.max.y - 10 - 20,
       60,
-      20
+      20,
+      {
+        collisionFilter: {
+          category: STATIC_CATEGORY,
+          mask: ROCKET_CATEGORY,
+        },
+        isStatic: true,
+        label: "lander",
+      }
     );
 
     const bodies = [rocketBody, ground, landingPad];
@@ -57,6 +84,20 @@ class Game {
     Matter.Events.on(runner, "beforeUpdate", () => {
       this.rocket.applyThrust();
       this.rocket.applyAngle();
+    });
+
+    Matter.Events.on(engine, "collisionActive", (collision) => {
+      if (
+        !Matter.Collision.collides(
+          rocketBody,
+          landingPad,
+          collision.source.pairs
+        )
+      ) {
+        return;
+      }
+
+      this.completeLevel();
     });
 
     this.runner = runner;
@@ -83,6 +124,10 @@ class Game {
 
   pause() {
     Matter.Runner.stop(this.runner);
+  }
+
+  completeLevel() {
+    console.log("Completed level");
   }
 }
 
