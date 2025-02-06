@@ -35,7 +35,7 @@ class Game {
     Matter.Body.setPosition(
       rocketBody,
       Matter.Vector.create(
-        20,
+        ROCKET_WIDTH / 2 + 20,
         ground.bounds.min.y - (rocketBody.bounds.max.y - rocketBody.position.y)
       )
     );
