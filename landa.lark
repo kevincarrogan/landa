@@ -8,15 +8,16 @@ parameters: parameter ("," " "* parameter)*
 
 parameter: PARAMETER_NAME ":" " "* parameter_value
 
-parameter_value: ESCAPED_STRING | int_with_unit | INT
+parameter_value: int_with_unit
 
-int_with_unit: INT _UNIT
+int_with_unit: INT UNIT
 
 FUNCTION_NAME: CNAME
 PARAMETER_NAME: CNAME
-_UNIT: "%" | "s" | "ms" | "deg" | "rad"
+UNIT: WORD | "%"
 _NEWLINE: "\n"
 
 %import common.CNAME
 %import common.ESCAPED_STRING
 %import common.INT
+%import common.WORD
