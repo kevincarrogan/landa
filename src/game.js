@@ -26,14 +26,18 @@ class Game {
     const ROCKET_HEIGHT = 40;
     const ROCKET_WIDTH = 40;
 
-    const rocketBody = Matter.Bodies.fromVertices(
-      ground.bounds.min.x + ROCKET_WIDTH / 2 + 20,
-      ground.bounds.min.y - ROCKET_HEIGHT / 2,
-      [
-        { x: 0, y: ROCKET_HEIGHT },
-        { x: ROCKET_HEIGHT, y: ROCKET_HEIGHT },
-        { x: ROCKET_WIDTH / 2, y: 0 },
-      ]
+    const rocketBody = Matter.Bodies.fromVertices(0, 0, [
+      { x: 0, y: ROCKET_HEIGHT },
+      { x: ROCKET_HEIGHT, y: ROCKET_HEIGHT },
+      { x: ROCKET_WIDTH / 2, y: 0 },
+    ]);
+
+    Matter.Body.setPosition(
+      rocketBody,
+      Matter.Vector.create(
+        20,
+        ground.bounds.min.y - (rocketBody.bounds.max.y - rocketBody.position.y)
+      )
     );
     this.rocket = new Rocket(rocketBody, engine.gravity);
 
