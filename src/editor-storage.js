@@ -1,6 +1,10 @@
 class EditorStorage {
-  constructor() {
+  constructor(initialValue) {
     this.key = "landa-editor";
+
+    if (localStorage.getItem(this.key) === null) {
+      localStorage.setItem(this.key, initialValue);
+    }
   }
 
   get() {

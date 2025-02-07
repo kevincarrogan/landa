@@ -16,7 +16,9 @@ const game = new Game(width, height);
 const $canvas = document.querySelector("#canvas");
 new Renderer(game, $canvas, width, height);
 
-const storage = new EditorStorage();
+const storage = new EditorStorage(
+  "setThrust(to: 21%)\nwait(for: 500ms)\nrotate(to: 45deg)\nwait(for: 1000ms)\nrotate(to: 0deg)\nsetThrust(to: 0%)\nwait(for: 5s)"
+);
 
 const $editor = document.querySelector("#editor-wrapper");
 const editor = new Editor($editor, storage.get());
