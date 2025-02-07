@@ -23,12 +23,6 @@ const storage = new EditorStorage(
 const $editor = document.querySelector("#editor-wrapper");
 const editor = new Editor($editor, storage.get());
 
-const $playButton = document.querySelector("#play");
-$playButton.addEventListener("click", () => {
-  game.setup();
-  game.run();
-});
-
 const functionRunner = new FunctionRunner();
 functionRunner.register(async function setThrust(to, _for) {
   game.rocket.setThrust(to.value);
