@@ -1,5 +1,4 @@
 import Matter from "matter-js";
-import collection from "lodash/collection";
 import { create, randomDependencies, unitDependencies } from "mathjs";
 import {
   ROCKET_CATEGORY,
@@ -29,7 +28,7 @@ class SpriteEmitter {
   }
 
   emitSprite(startTimestamp) {
-    const body = Matter.Bodies.rectangle(this.x - 20, this.y - 20, 10, 10, {
+    const body = Matter.Bodies.rectangle(this.x, this.y, 3, 3, {
       collisionFilter: {
         category: SPRITE_CATEGORY,
         mask: STATIC_CATEGORY | ROCKET_CATEGORY,
@@ -37,8 +36,8 @@ class SpriteEmitter {
     });
     const spread = math.unit(math.random(-15, 15), "deg").toNumber("rad");
     const force = Matter.Vector.create(
-      0.001 * Math.sin(spread),
-      -0.001 * Math.cos(spread)
+      0.0001 * Math.sin(spread + Math.PI),
+      -0.0001 * Math.cos(spread + Math.PI)
     );
     Matter.Composite.add(this.composite, body);
     Matter.Body.applyForce(body, body.position, force);
