@@ -56,7 +56,13 @@ class Renderer {
     p.background(255);
     p.noStroke();
     const cameraBounds = this.getCameraBounds();
-    for (const body of this.game.getBodies(cameraBounds)) {
+    this.renderBodies(p, cameraBounds);
+    this.renderSprites(p, cameraBounds);
+  }
+
+  renderBodies(p, cameraBounds) {
+    const bodies = this.game.getBodies(cameraBounds);
+    for (const body of bodies) {
       for (let x = cameraBounds.min.x; x <= cameraBounds.max.x; x += ROUND_TO) {
         for (
           let y = cameraBounds.min.y;
@@ -71,6 +77,18 @@ class Renderer {
           }
         }
       }
+    }
+  }
+
+  renderSprites(p, cameraBounds) {
+    const sprites = this.game.getSprites(cameraBounds);
+    for (const sprite of sprites) {
+      const translatedPoint = this.translatePoint(
+        cameraBounds,
+        sprite.position
+      );
+      p.fill(0);
+      this.drawPixel(p, translatedPoint);
     }
   }
 

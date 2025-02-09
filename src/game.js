@@ -1,5 +1,11 @@
 import Matter from "matter-js";
 import { Rocket } from "./rocket";
+import { SpriteEmitter } from "./sprite-emitter";
+import {
+  STATIC_CATEGORY,
+  ROCKET_CATEGORY,
+  SPRITE_CATEGORY,
+} from "./collision-categories";
 
 class Game {
   constructor(width, height) {
@@ -13,8 +19,7 @@ class Game {
       gravity: { x: 0, y: 0.16, scale: 0.001 },
     });
 
-    const STATIC_CATEGORY = 0x0001;
-    const ROCKET_CATEGORY = 0x0002;
+    const runner = Matter.Runner.create();
 
     const ground = Matter.Bodies.rectangle(
       this.width / 2,
@@ -24,7 +29,7 @@ class Game {
       {
         collisionFilter: {
           category: STATIC_CATEGORY,
-          mask: ROCKET_CATEGORY,
+          mask: ROCKET_CATEGORY | SPRITE_CATEGORY,
         },
         isStatic: true,
         label: "ground",
@@ -46,7 +51,7 @@ class Game {
         label: "rocket",
         collisionFilter: {
           category: ROCKET_CATEGORY,
-          mask: STATIC_CATEGORY,
+          mask: STATIC_CATEGORY | SPRITE_CATEGORY,
         },
       }
     );
@@ -75,15 +80,27 @@ class Game {
       }
     );
 
-    const bodies = [rocketBody, ground, landingPad];
+    const spriteComposite = Matter.Composite.create();
+    const spriteEmitter = new SpriteEmitter(
+      100,
+      400,
+      5,
+      5,
+      runner.delta,
+      750,
+      spriteComposite
+    );
+    this.sprites = spriteComposite;
+
+    const bodies = [rocketBody, ground, landingPad, spriteComposite];
 
     this.composite = Matter.Composite.add(engine.world, bodies);
 
-    const runner = Matter.Runner.create();
-
-    Matter.Events.on(runner, "beforeUpdate", () => {
+    Matter.Events.on(runner, "beforeUpdate", (evt) => {
       this.rocket.applyThrust();
       this.rocket.applyAngle();
+
+      spriteEmitter.tick(evt.timestamp);
     });
 
     Matter.Events.on(engine, "collisionActive", (collision) => {
@@ -105,13 +122,14 @@ class Game {
   }
 
   getBodies(bounds) {
-    if (!bounds) {
-      bounds = {
-        min: { x: 0, y: 0 },
-        max: { x: this.width, y: this.height },
-      };
-    }
     return Matter.Query.region(this.composite.bodies, bounds);
+  }
+
+  getSprites(bounds) {
+    return Matter.Query.region(
+      Matter.Composite.allBodies(this.sprites),
+      bounds
+    );
   }
 
   contains(body, point) {
