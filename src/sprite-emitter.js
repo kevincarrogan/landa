@@ -1,10 +1,6 @@
 import Matter from "matter-js";
 import { create, randomDependencies, unitDependencies } from "mathjs";
-import {
-  ROCKET_CATEGORY,
-  SPRITE_CATEGORY,
-  STATIC_CATEGORY,
-} from "./collision-categories";
+import { SPRITE_CATEGORY, STATIC_CATEGORY } from "./collision-categories";
 
 const math = create({
   randomDependencies,
@@ -31,8 +27,10 @@ class SpriteEmitter {
     const body = Matter.Bodies.rectangle(this.x, this.y, 3, 3, {
       collisionFilter: {
         category: SPRITE_CATEGORY,
-        mask: STATIC_CATEGORY | ROCKET_CATEGORY,
+        mask: STATIC_CATEGORY,
       },
+      restitution: 0.95,
+      friction: 0.3,
     });
     const spread = math.unit(math.random(-15, 15), "deg").toNumber("rad");
     const force = Matter.Vector.create(
@@ -65,6 +63,11 @@ class SpriteEmitter {
       this.emitSprite(timestamp);
       this.lastTimestamp = timestamp;
     }
+  }
+
+  setPosition(position) {
+    this.x = position.x;
+    this.y = position.y;
   }
 }
 

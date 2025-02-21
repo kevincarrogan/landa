@@ -82,8 +82,8 @@ class Game {
 
     const spriteComposite = Matter.Composite.create();
     const spriteEmitter = new SpriteEmitter(
-      100,
-      400,
+      rocketBody.bounds.min.x + ROCKET_WIDTH / 2,
+      rocketBody.bounds.max.y,
       5,
       5,
       runner.delta,
@@ -101,6 +101,7 @@ class Game {
       this.rocket.applyAngle();
 
       spriteEmitter.tick(evt.timestamp);
+      spriteEmitter.setPosition(this.rocket.body.position);
     });
 
     Matter.Events.on(engine, "collisionActive", (collision) => {
