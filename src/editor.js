@@ -11,6 +11,7 @@ class Editor extends EventEmitter {
     super();
     this.setup($el, initialValue);
     this.highlightMap = new Map();
+    this.$el = $el;
   }
 
   setup($el, initialValue) {
@@ -81,6 +82,10 @@ class Editor extends EventEmitter {
 
   getValue() {
     return this.editor.textarea.value;
+  }
+
+  hide() {
+    this.$el.style.display = "none";
   }
 }
 

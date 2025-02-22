@@ -22,7 +22,17 @@
       <section id="editor">
         <section id="editor-wrapper">
         </section>
+        <section id="debugger" class="debugger">
+          <form id="debug-form">
+            <fieldset class="debugger__fieldset">
+              <label>Thrust</label>
+              <input type="range" name="thrust" min="0" max="100" value="0" data-units="%">
+              <output name="thrust-value"></output>
+            </fieldset>
+          </form>
+        </section>
         <footer id="editor-actions">
+          <button id="debug">Debug</button>
           <button id="run">Run</button>
         </footer>
       </section>

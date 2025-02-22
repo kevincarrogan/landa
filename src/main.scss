@@ -35,6 +35,10 @@ button {
   }
 }
 
+input[type="range"] {
+  cursor: pointer;
+}
+
 #main {
   border: 1px solid black;
   display: flex;
@@ -55,7 +59,8 @@ button {
 }
 
 #game-wrapper,
-#editor-wrapper {
+#editor-wrapper,
+#debugger {
   height: 480px;
 }
 
@@ -73,4 +78,21 @@ button {
 
 #editor-wrapper {
   overflow-y: auto;
+}
+
+.debugger {
+  display: none;
+
+  &__fieldset {
+    border: none;
+    display: flex;
+    gap: 5px;
+  }
+}
+
+#debug-form {
+  padding: 10px;
+}
+
+.debugger__fieldset {
 }

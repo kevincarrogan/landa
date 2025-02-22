@@ -1,6 +1,7 @@
 import { Game } from "./game";
 import { Renderer } from "./renderer";
 import { Editor } from "./editor";
+import { Debugger } from "./debugger";
 import { get_parser as getParser } from "./parser";
 import { sleep } from "./utils";
 import { FunctionTransform } from "./transformers";
@@ -22,6 +23,9 @@ const storage = new EditorStorage(
 
 const $editor = document.querySelector("#editor-wrapper");
 const editor = new Editor($editor, storage.get());
+
+const $debugger = document.querySelector("#debugger");
+const gameDebugger = new Debugger($debugger);
 
 const functionRunner = new FunctionRunner();
 functionRunner.register(async function setThrust(to, _for) {
@@ -96,3 +100,16 @@ $runButton.addEventListener("click", () => runCode());
 
 editor.on("submit", () => runCode());
 editor.on("change", (value) => storage.set(value));
+
+const $debugButton = document.querySelector("#debug");
+$debugButton.addEventListener("click", () => {
+  editor.hide();
+  gameDebugger.show();
+  game.run();
+  $runButton.disabled = true;
+});
+
+gameDebugger.on("change:thrust", (thrust) => {
+  console.log("Trying to set thrust to", thrust);
+  game.rocket.setThrust(thrust.value);
+});
