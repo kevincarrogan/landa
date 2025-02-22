@@ -5,6 +5,7 @@ import {
   evaluateDependencies,
   unitDependencies,
 } from "mathjs";
+import _ from "lodash/string";
 
 const math = create({
   createUnitDependencies,
@@ -27,7 +28,7 @@ class Debugger extends EventEmitter {
       const setValue = () => {
         const newValue = `${$input.value}${units}`;
         $output.value = newValue;
-        const eventName = `change:${$input.name}`;
+        const eventName = this.getEventName($input.name);
         let transformedUnits = units;
         if (transformedUnits === "%") {
           transformedUnits = "percent";
@@ -46,6 +47,11 @@ class Debugger extends EventEmitter {
   }
 
   run() {}
+
+  getEventName(valueName) {
+    const normalisedName = _.camelCase(valueName);
+    return `change:${normalisedName}`;
+  }
 }
 
 export { Debugger };

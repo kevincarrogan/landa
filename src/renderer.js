@@ -92,9 +92,9 @@ class Renderer {
     }
   }
 
-  drawPixel = (p, { x, y }) => {
+  drawPixel(p, { x, y }) {
     p.square(x, y, BOX_SIZE);
-  };
+  }
 }
 
 export { Renderer };

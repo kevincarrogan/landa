@@ -116,3 +116,7 @@ gameDebugger.on("change:thrust", (thrust) => {
 gameDebugger.on("change:rotation", (rotation) => {
   game.rocket.rotateTo(rotation.value);
 });
+
+gameDebugger.on("change:spriteDecay", (spriteDecay) => {
+  game.setSpriteDecay(spriteDecay.toNumber());
+});

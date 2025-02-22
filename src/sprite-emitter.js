@@ -69,6 +69,10 @@ class SpriteEmitter {
     this.x = position.x;
     this.y = position.y;
   }
+
+  setSpriteDecay(decayTime) {
+    this.decay = decayTime;
+  }
 }
 
 export { SpriteEmitter };

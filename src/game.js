@@ -11,6 +11,7 @@ class Game {
   constructor(width, height) {
     this.width = width;
     this.height = height;
+    this.spriteDecay = 500;
     this.setup();
   }
 
@@ -87,7 +88,7 @@ class Game {
       5,
       5,
       runner.delta,
-      750,
+      this.spriteDecay,
       spriteComposite
     );
     this.sprites = spriteComposite;
@@ -120,6 +121,7 @@ class Game {
 
     this.runner = runner;
     this.engine = engine;
+    this.spriteEmitter = spriteEmitter;
   }
 
   getBodies(bounds) {
@@ -147,6 +149,10 @@ class Game {
 
   completeLevel() {
     console.log("Completed level");
+  }
+
+  setSpriteDecay(decayTime) {
+    this.spriteEmitter.setSpriteDecay(decayTime);
   }
 }
 
