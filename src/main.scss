@@ -7,8 +7,7 @@ html {
 
 $border-size: 2px;
 
-button {
-  background-color: white;
+@mixin notched-border {
   border: $border-size solid black;
   clip-path: polygon(
     0 $border-size,
@@ -24,6 +23,12 @@ button {
     $border-size calc(100% - $border-size),
     0 calc(100% - $border-size)
   );
+}
+
+button {
+  @include notched-border;
+
+  background-color: white;
   cursor: pointer;
   font-family: inherit;
   font-weight: bold;
@@ -40,7 +45,8 @@ input[type="range"] {
 }
 
 #main {
-  border: $border-size solid black;
+  @include notched-border;
+
   display: flex;
   flex-direction: row;
   margin: 0 auto;
