@@ -25,14 +25,19 @@
         <section id="debugger" class="debugger">
           <form id="debug-form">
             <fieldset class="debugger__fieldset">
-              <label>Thrust</label>
-              <input type="range" name="thrust" min="0" max="100" value="0" data-units="%">
+              <label for="thrust">Thrust</label>
+              <input id="thrust" type="range" name="thrust" min="0" max="100" value="0" data-units="%">
               <output name="thrust-value"></output>
             </fieldset>
             <fieldset class="debugger__fieldset">
-              <label>Rotation</label>
-              <input type="range" name="rotation" min="-360" max="360" value="0" data-units="deg">
+              <label for="rotation">Rotation</label>
+              <input id="rotation" type="range" name="rotation" min="-360" max="360" value="0" data-units="deg">
               <output name="rotation-value"></output>
+            </fieldset>
+            <fieldset class="debugger__fieldset">
+              <label for="sprite-decay">Sprite decay</label>
+              <input id="sprite-decay" type="range" name="sprite-decay" min="5" max="5000" value="500" data-units="ms">
+              <output name="sprite-decay-value"></output>
             </fieldset>
           </form>
         </section>
