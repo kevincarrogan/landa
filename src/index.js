@@ -110,6 +110,9 @@ $debugButton.addEventListener("click", () => {
 });
 
 gameDebugger.on("change:thrust", (thrust) => {
-  console.log("Trying to set thrust to", thrust);
   game.rocket.setThrust(thrust.value);
+});
+
+gameDebugger.on("change:rotation", (rotation) => {
+  game.rocket.rotateTo(rotation.value);
 });
