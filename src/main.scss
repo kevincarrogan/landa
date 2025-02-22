@@ -1,10 +1,38 @@
 html {
-  font-family:
-    Consolas,
-    Monaco,
-    Andale Mono,
-    Ubuntu Mono,
-    monospace;
+  font-family: "Pixelify Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+$button-border: 3px;
+
+button {
+  background-color: white;
+  border: $button-border solid black;
+  clip-path: polygon(
+    0 $button-border,
+    $button-border $button-border,
+    $button-border 0,
+    calc(100% - $button-border) 0,
+    calc(100% - $button-border) $button-border,
+    100% $button-border,
+    100% calc(100% - $button-border),
+    calc(100% - $button-border) calc(100% - $button-border),
+    calc(100% - $button-border) 100%,
+    $button-border 100%,
+    $button-border calc(100% - $button-border),
+    0 calc(100% - $button-border)
+  );
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+  padding: 8px 12px;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: #ccc;
+  }
 }
 
 #main {
