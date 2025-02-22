@@ -1,8 +1,8 @@
 import p5 from "p5";
 import { roundToNearest } from "./utils";
 
-const MARGIN = 1;
-const BOX_SIZE = 3;
+const MARGIN = 0;
+const BOX_SIZE = 2;
 const ROUND_TO = BOX_SIZE + MARGIN;
 
 class Renderer {

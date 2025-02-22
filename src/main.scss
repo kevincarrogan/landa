@@ -5,24 +5,24 @@ html {
   font-style: normal;
 }
 
-$button-border: 3px;
+$border-size: 2px;
 
 button {
   background-color: white;
-  border: $button-border solid black;
+  border: $border-size solid black;
   clip-path: polygon(
-    0 $button-border,
-    $button-border $button-border,
-    $button-border 0,
-    calc(100% - $button-border) 0,
-    calc(100% - $button-border) $button-border,
-    100% $button-border,
-    100% calc(100% - $button-border),
-    calc(100% - $button-border) calc(100% - $button-border),
-    calc(100% - $button-border) 100%,
-    $button-border 100%,
-    $button-border calc(100% - $button-border),
-    0 calc(100% - $button-border)
+    0 $border-size,
+    $border-size $border-size,
+    $border-size 0,
+    calc(100% - $border-size) 0,
+    calc(100% - $border-size) $border-size,
+    100% $border-size,
+    100% calc(100% - $border-size),
+    calc(100% - $border-size) calc(100% - $border-size),
+    calc(100% - $border-size) 100%,
+    $border-size 100%,
+    $border-size calc(100% - $border-size),
+    0 calc(100% - $border-size)
   );
   cursor: pointer;
   font-family: inherit;
@@ -40,7 +40,7 @@ input[type="range"] {
 }
 
 #main {
-  border: 1px solid black;
+  border: $border-size solid black;
   display: flex;
   flex-direction: row;
   margin: 0 auto;
@@ -48,7 +48,7 @@ input[type="range"] {
 }
 
 #game {
-  border-right: 1px solid black;
+  border-right: $border-size solid black;
 }
 
 #editor,
@@ -66,7 +66,7 @@ input[type="range"] {
 
 #game-actions,
 #editor-actions {
-  border-top: 1px solid black;
+  border-top: $border-size solid black;
   display: flex;
   gap: 10px;
   padding: 10px;
@@ -92,7 +92,4 @@ input[type="range"] {
 
 #debug-form {
   padding: 10px;
-}
-
-.debugger__fieldset {
 }
