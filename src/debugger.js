@@ -23,17 +23,12 @@ class Debugger extends EventEmitter {
 
   setup($el) {
     for (const $input of $el.querySelectorAll("input")) {
-      let units = $input.dataset.units;
       const $output = $el.querySelector(`[name=${$input.name}-value]`);
       const setValue = () => {
-        const newValue = `${$input.value}${units}`;
-        $output.value = newValue;
+        const [displayValue, value] = this.getValueWithUnits($input);
+        $output.value = displayValue;
         const eventName = this.getEventName($input.name);
-        let transformedUnits = units;
-        if (transformedUnits === "%") {
-          transformedUnits = "percent";
-        }
-        this.emit(eventName, math.unit($input.value, transformedUnits));
+        this.emit(eventName, value);
       };
       $input.addEventListener("input", () => {
         setValue();
@@ -51,6 +46,18 @@ class Debugger extends EventEmitter {
   getEventName(valueName) {
     const normalisedName = _.camelCase(valueName);
     return `change:${normalisedName}`;
+  }
+
+  getValueWithUnits($input) {
+    const units = $input.dataset.units;
+    const displayValue = `${$input.value}${units}`;
+    let transformedUnits = units;
+    if (transformedUnits === "%") {
+      transformedUnits = "percent";
+    }
+    const value = math.unit($input.value, transformedUnits);
+
+    return [displayValue, value];
   }
 }
 

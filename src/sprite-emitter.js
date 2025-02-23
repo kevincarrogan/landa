@@ -1,11 +1,8 @@
 import Matter from "matter-js";
-import { create, randomDependencies, unitDependencies } from "mathjs";
+import { all, create } from "mathjs";
 import { SPRITE_CATEGORY, STATIC_CATEGORY } from "./collision-categories";
 
-const math = create({
-  randomDependencies,
-  unitDependencies,
-});
+const math = create(all);
 
 class SpriteEmitter {
   constructor(x, y, rate, randomiseRate, delta, decay, spriteComposite) {
@@ -53,13 +50,12 @@ class SpriteEmitter {
       shouldRemove(timestamp)
     );
 
+    if (this.lastTimestamp === null) {
+      this.lastTimestamp = timestamp;
+    }
+
     const d = timestamp - this.lastTimestamp;
-    if (
-      this.lastTimestamp === null ||
-      d >=
-        (this.delta + math.random(-this.randomiseRate, this.randomiseRate)) *
-          this.rate
-    ) {
+    if (math.larger(math.unit(d, "ms"), math.divide(1, this.rate).to("ms"))) {
       this.emitSprite(timestamp);
       this.lastTimestamp = timestamp;
     }
@@ -72,6 +68,10 @@ class SpriteEmitter {
 
   setSpriteDecay(decayTime) {
     this.decay = decayTime;
+  }
+
+  setSpriteRate(rate) {
+    this.rate = rate;
   }
 }
 

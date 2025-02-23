@@ -120,3 +120,7 @@ gameDebugger.on("change:rotation", (rotation) => {
 gameDebugger.on("change:spriteDecay", (spriteDecay) => {
   game.setSpriteDecay(spriteDecay.toNumber());
 });
+
+gameDebugger.on("change:spriteRate", (spriteRate) => {
+  game.setSpriteRate(spriteRate);
+});

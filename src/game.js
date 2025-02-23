@@ -6,12 +6,18 @@ import {
   ROCKET_CATEGORY,
   SPRITE_CATEGORY,
 } from "./collision-categories";
+import { create, unitDependencies } from "mathjs";
+
+const math = create({
+  unitDependencies,
+});
 
 class Game {
   constructor(width, height) {
     this.width = width;
     this.height = height;
     this.spriteDecay = 500;
+    this.spriteRate = math.unit(60, "Hz");
     this.setup();
   }
 
@@ -85,7 +91,7 @@ class Game {
     const spriteEmitter = new SpriteEmitter(
       rocketBody.bounds.min.x + ROCKET_WIDTH / 2,
       rocketBody.bounds.max.y,
-      5,
+      this.spriteRate,
       5,
       runner.delta,
       this.spriteDecay,
@@ -153,6 +159,10 @@ class Game {
 
   setSpriteDecay(decayTime) {
     this.spriteEmitter.setSpriteDecay(decayTime);
+  }
+
+  setSpriteRate(rate) {
+    this.spriteEmitter.setSpriteRate(rate);
   }
 }
 
