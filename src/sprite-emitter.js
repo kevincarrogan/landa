@@ -5,13 +5,23 @@ import { SPRITE_CATEGORY, STATIC_CATEGORY } from "./collision-categories";
 const math = create(all);
 
 class SpriteEmitter {
-  constructor(x, y, rate, randomiseRate, delta, decay, spriteComposite) {
+  constructor(
+    x,
+    y,
+    rate,
+    randomiseRate,
+    delta,
+    decay,
+    spread,
+    spriteComposite
+  ) {
     this.x = x;
     this.y = y;
     this.rate = rate;
     this.randomiseRate = randomiseRate;
     this.delta = delta;
     this.decay = decay;
+    this.spread = spread;
     this.lastTimestamp = null;
 
     this.composite = Matter.Composite.create();
@@ -29,7 +39,15 @@ class SpriteEmitter {
       restitution: 0.95,
       friction: 0.3,
     });
-    const spread = math.unit(math.random(-15, 15), "deg").toNumber("rad");
+    const spread = math
+      .unit(
+        math.random(
+          this.spread.multiply(-0.5).toNumber("rad"),
+          this.spread.multiply(0.5).toNumber("rad")
+        ),
+        "rad"
+      )
+      .toNumber("rad");
     const force = Matter.Vector.create(
       0.0001 * Math.sin(spread + Math.PI),
       -0.0001 * Math.cos(spread + Math.PI)
@@ -72,6 +90,10 @@ class SpriteEmitter {
 
   setSpriteRate(rate) {
     this.rate = rate;
+  }
+
+  setSpriteSpread(spread) {
+    this.spread = spread;
   }
 }
 

@@ -124,3 +124,7 @@ gameDebugger.on("change:spriteDecay", (spriteDecay) => {
 gameDebugger.on("change:spriteRate", (spriteRate) => {
   game.setSpriteRate(spriteRate);
 });
+
+gameDebugger.on("change:spriteSpread", (spriteSpread) => {
+  game.setSpriteSpread(spriteSpread);
+});

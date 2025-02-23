@@ -18,6 +18,7 @@ class Game {
     this.height = height;
     this.spriteDecay = 500;
     this.spriteRate = math.unit(60, "Hz");
+    this.spread = math.unit(30, "deg");
     this.setup();
   }
 
@@ -95,6 +96,7 @@ class Game {
       5,
       runner.delta,
       this.spriteDecay,
+      this.spread,
       spriteComposite
     );
     this.sprites = spriteComposite;
@@ -163,6 +165,10 @@ class Game {
 
   setSpriteRate(rate) {
     this.spriteEmitter.setSpriteRate(rate);
+  }
+
+  setSpriteSpread(spread) {
+    this.spriteEmitter.setSpriteSpread(spread);
   }
 }
 
