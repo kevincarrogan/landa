@@ -8,9 +8,9 @@ parameters: parameter ("," " "* parameter)*
 
 parameter: PARAMETER_NAME ":" " "* parameter_value
 
-parameter_value: int_with_unit
+parameter_value: number_with_unit
 
-int_with_unit: INT UNIT
+number_with_unit: SIGNED_NUMBER UNIT
 
 FUNCTION_NAME: CNAME
 PARAMETER_NAME: CNAME
@@ -19,5 +19,5 @@ _NEWLINE: "\n"
 
 %import common.CNAME
 %import common.ESCAPED_STRING
-%import common.INT
+%import common.SIGNED_NUMBER
 %import common.WORD

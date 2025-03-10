@@ -44,7 +44,7 @@ class FunctionTransform extends Transformer {
     return value;
   }
 
-  INT({ value }) {
+  SIGNED_NUMBER({ value }) {
     return math.unit(value).toNumber();
   }
 
@@ -52,7 +52,7 @@ class FunctionTransform extends Transformer {
     return value;
   }
 
-  int_with_unit([val, unit]) {
+  number_with_unit([val, unit]) {
     return math.unit(val, unit);
   }
 
