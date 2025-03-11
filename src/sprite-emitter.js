@@ -48,12 +48,12 @@ class SpriteEmitter {
         "rad"
       )
       .toNumber("rad");
-    const force = Matter.Vector.create(
-      0.0001 * Math.sin(spread + Math.PI),
-      -0.0001 * Math.cos(spread + Math.PI)
+    const velocity = Matter.Vector.create(
+      Math.sin(spread + Math.PI),
+      Math.cos(spread + Math.PI)
     );
     Matter.Composite.add(this.composite, body);
-    Matter.Body.applyForce(body, body.position, force);
+    Matter.Body.setVelocity(body, velocity);
     this.sprites.push((timestamp) => {
       if (timestamp - startTimestamp >= this.decay) {
         Matter.Composite.remove(this.composite, body);
