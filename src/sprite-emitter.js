@@ -9,7 +9,6 @@ class SpriteEmitter {
     x,
     y,
     rate,
-    randomiseRate,
     delta,
     decay,
     spread,
@@ -18,7 +17,6 @@ class SpriteEmitter {
     this.x = x;
     this.y = y;
     this.rate = rate;
-    this.randomiseRate = randomiseRate;
     this.delta = delta;
     this.decay = decay;
     this.spread = spread;

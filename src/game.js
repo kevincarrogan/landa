@@ -93,7 +93,6 @@ class Game {
       rocketBody.bounds.min.x + ROCKET_WIDTH / 2,
       rocketBody.bounds.max.y,
       this.spriteRate,
-      5,
       runner.delta,
       this.spriteDecay,
       this.spread,
