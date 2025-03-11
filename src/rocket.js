@@ -57,6 +57,14 @@ class Rocket {
   getPosition() {
     return this.body.position;
   }
+
+  getVelocity() {
+    return Matter.Body.getVelocity(this.body);
+  }
+
+  getAngle() {
+    return this.body.angle;
+  }
 }
 
 export { Rocket };

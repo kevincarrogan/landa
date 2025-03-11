@@ -111,7 +111,7 @@ class Game {
 
       spriteEmitter.tick(evt.timestamp);
       spriteEmitter.setPosition(this.rocket.body.position);
-      spriteEmitter.setAngle(rocketBody.angle);
+      spriteEmitter.setVelocity(this.rocket.getVelocity());
     });
 
     Matter.Events.on(engine, "collisionActive", (collision) => {

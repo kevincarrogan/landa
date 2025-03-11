@@ -23,6 +23,7 @@ class SpriteEmitter {
     this.decay = decay;
     this.spread = spread;
     this.lastTimestamp = null;
+    this.velocity = Matter.Vector.create(0, 0);
 
     this.composite = Matter.Composite.create();
     Matter.Composite.add(spriteComposite, this.composite);
@@ -39,21 +40,8 @@ class SpriteEmitter {
       restitution: 0.95,
       friction: 0.3,
     });
-    const spread = math
-      .unit(
-        math.random(
-          this.spread.multiply(-0.5).toNumber("rad"),
-          this.spread.multiply(0.5).toNumber("rad")
-        ),
-        "rad"
-      )
-      .toNumber("rad");
-    const velocity = Matter.Vector.create(
-      Math.cos(this.angle + spread + Math.PI / 2) * 10,
-      Math.sin(this.angle + spread + Math.PI / 2) * 10
-    );
     Matter.Composite.add(this.composite, body);
-    Matter.Body.setVelocity(body, velocity);
+    Matter.Body.setVelocity(body, this.velocity);
     this.sprites.push((timestamp) => {
       if (timestamp - startTimestamp >= this.decay) {
         Matter.Composite.remove(this.composite, body);
@@ -98,6 +86,10 @@ class SpriteEmitter {
 
   setSpriteSpread(spread) {
     this.spread = spread;
+  }
+
+  setVelocity(velocity) {
+    this.velocity = velocity;
   }
 }
 
