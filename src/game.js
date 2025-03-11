@@ -92,6 +92,7 @@ class Game {
     const spriteEmitter = new SpriteEmitter(
       rocketBody.bounds.min.x + ROCKET_WIDTH / 2,
       rocketBody.bounds.max.y,
+      rocketBody.angle,
       this.spriteRate,
       runner.delta,
       this.spriteDecay,
@@ -110,6 +111,7 @@ class Game {
 
       spriteEmitter.tick(evt.timestamp);
       spriteEmitter.setPosition(this.rocket.body.position);
+      spriteEmitter.setAngle(rocketBody.angle);
     });
 
     Matter.Events.on(engine, "collisionActive", (collision) => {

@@ -8,6 +8,7 @@ class SpriteEmitter {
   constructor(
     x,
     y,
+    angle,
     rate,
     delta,
     decay,
@@ -16,6 +17,7 @@ class SpriteEmitter {
   ) {
     this.x = x;
     this.y = y;
+    this.angle = angle;
     this.rate = rate;
     this.delta = delta;
     this.decay = decay;
@@ -47,8 +49,8 @@ class SpriteEmitter {
       )
       .toNumber("rad");
     const velocity = Matter.Vector.create(
-      Math.sin(spread + Math.PI),
-      Math.cos(spread + Math.PI)
+      Math.cos(this.angle + spread + Math.PI / 2) * 10,
+      Math.sin(this.angle + spread + Math.PI / 2) * 10
     );
     Matter.Composite.add(this.composite, body);
     Matter.Body.setVelocity(body, velocity);
@@ -80,6 +82,10 @@ class SpriteEmitter {
   setPosition(position) {
     this.x = position.x;
     this.y = position.y;
+  }
+
+  setAngle(angle) {
+    this.angle = angle;
   }
 
   setSpriteDecay(decayTime) {
